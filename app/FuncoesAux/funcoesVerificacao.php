@@ -22,4 +22,17 @@ class funcoesVerificacao
         // Se a foto não for válida, retorna null
         return null;
     }
+
+    public static function mapGender(string $input): string
+{
+    
+    $input = strtolower(trim($input));
+
+    return match ($input) {
+        'male' => 'M',
+        'female' => 'F',
+        'other' => 'O',
+        default => throw new \InvalidArgumentException("Invalid gender: $input"),
+    };
+}
 }

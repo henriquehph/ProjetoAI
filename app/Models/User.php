@@ -22,6 +22,15 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'delivery_address',
+        'NIF_number',
+        'payment_details',
+        'profile photo',
+        'type',
+        'blocked',
+        'gender',
+        'default_payment_type',
+        'default_payment_reference',
     ];
 
     /**
@@ -45,5 +54,10 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function card()
+    {
+        return $this->hasOne(Card::class, 'id');
     }
 }

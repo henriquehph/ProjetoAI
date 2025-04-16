@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use App\Models\Card;
 
 class RegisteredUserController extends Controller
 {
@@ -48,11 +49,18 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'gender' => $request->gender,
+            'gender' => funcoesVerificacao::mapGender($request->gender), // Mapeia o género para M, F ou O
             'address' => $request->address,
             'nif' => $request->nif,
             'payment_info' => $request->payment_info,
             'photo' => $request->photo,
+            'blocked' => 0,  // Default blocked status
+        ]);
+
+        Card::create([
+            'id' => $user->id,  // Associate the card with the user
+            'balance' => 0,  // Starting balance for the card
+            'card_number' => rand(100000, 999999), // Generate a 6-digit card number
         ]);
 
         event(new Registered($user));
