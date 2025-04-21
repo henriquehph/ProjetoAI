@@ -54,7 +54,8 @@ class RegisteredUserController extends Controller
             'nif' => $request->nif,
             'payment_info' => $request->payment_info,
             'photo' => $request->photo,
-            'blocked' => 0,  // Default blocked status
+            'blocked' => 0, // 0 -> Não bloqueado, 1 -> Bloqueado
+            'type' => 'pending_member', // Tipo de utilizador
         ]);
 
         Card::create([

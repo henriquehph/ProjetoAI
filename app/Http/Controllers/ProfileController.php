@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\FuncoesAux\funcoesVerificacao;
 
 class ProfileController extends Controller
 {
@@ -17,10 +18,19 @@ class ProfileController extends Controller
     public function edit(Request $request): View
     {
         $user = $request->user();
-        return view('profile.edit', [
-            'user' => $user,
-            'balance' => $user->card->balance ?? 0,
-        ]);
+
+        if ($user->type === 'employee') {
+            // Página para employees
+            return view('profile.edit_employee', compact('user'));
+        } else {
+            return view('profile.edit', [
+                'user' => $user,
+                'balance' => $user->card->balance ?? 0,
+                'membership' => $user->type,
+                'gender' => funcoesVerificacao::mapGender($user->gender)
+
+            ]);
+        }
     }
 
     /**

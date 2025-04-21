@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\FundsController; 
+use App\Http\Controllers\MembershipController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -33,3 +34,9 @@ Route::get('/add-funds', [FundsController::class, 'showAddFundsPage'])->middlewa
 Route::post('/add-funds', [FundsController::class, 'addFunds'])->middleware('verified');
 
 Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+
+// Mostrar a página de pagamento de membership
+Route::get('/membership/pay', [MembershipController::class, 'showPaymentForm'])->name('payments.pay');
+
+// Processar o pagamento de membership
+Route::post('/membership/pay', [MembershipController::class, 'processPayment'])->name('membership.process');

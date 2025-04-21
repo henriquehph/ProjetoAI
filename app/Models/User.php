@@ -25,7 +25,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'delivery_address',
         'NIF_number',
         'payment_details',
-        'profile photo',
+        'photo',
         'type',
         'blocked',
         'gender',
