@@ -39,7 +39,7 @@
 
                     <br>
 
-                    <!-- Display Gender and Membership Status -->
+                    <!-- Display Membership Status -->
                     <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                         <div class="max-w-xl">
                             <p class="text-lg text-gray-700 dark:text-gray-300 font-semibold">

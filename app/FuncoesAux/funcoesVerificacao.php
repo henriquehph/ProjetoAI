@@ -32,9 +32,9 @@ class funcoesVerificacao
         'male' => 'M',
         'female' => 'F',
         'other' => 'O',
-        'm' => 'male',
-        'f' => 'female',
-        'o' => 'other',
+        'm' => 'Male',
+        'f' => 'Female',
+        'o' => 'Other',
         default => throw new \InvalidArgumentException("Invalid gender: $input"),
     };
 }

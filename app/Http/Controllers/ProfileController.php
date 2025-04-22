@@ -44,14 +44,16 @@ class ProfileController extends Controller
             'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $user->id],
             'name' => ['required', 'string', 'max:255'],
             'password' => ['nullable', 'confirmed', 'min:8'],
+            'gender' => ['required', 'in:M,F,O'],
         ]);
-        $user()->fill($request->validated());
 
-        if ($user()->isDirty('email')) {
-            $user()->email_verified_at = null;
+        $user->fill($request->validated());
+
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
         }
 
-        $user()->save();
+        $user->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
 
