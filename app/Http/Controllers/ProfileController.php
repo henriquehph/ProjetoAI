@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
-use App\FuncoesAux\funcoesVerificacao;
+use App\FuncoesAux\funcoesMap;
 
 class ProfileController extends Controller
 {
@@ -27,7 +27,11 @@ class ProfileController extends Controller
                 'user' => $user,
                 'balance' => $user->card->balance ?? 0,
                 'membership' => $user->type,
-                'gender' => funcoesVerificacao::mapGender($user->gender)
+                'gender' => funcoesMap::mapGender($user->gender),
+                'default_delivery_address' => $user->default_delivery_address,
+                'nif'=> $user->nif,
+                'default_payment_type' => $user->default_payment_type,
+                'photo' => $user->photo,
 
             ]);
         }
@@ -45,6 +49,10 @@ class ProfileController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'password' => ['nullable', 'confirmed', 'min:8'],
             'gender' => ['required', 'in:M,F,O'],
+            'nif' => ['nullable', 'regex:/^\d{9}$/'],
+            'default_delivery_address' => ['nullable', 'string', 'max:255'],
+            'default_payment_type' => ['nullable', 'in: Visa,PayPal,MB WAY'],
+            'photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10240'],
         ]);
 
         $user->fill($request->validated());

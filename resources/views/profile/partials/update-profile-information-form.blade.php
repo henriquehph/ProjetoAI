@@ -55,11 +55,44 @@
             <select id="gender" name="gender"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-indigo-200">
                 <option value="M" {{ old('gender', $user->gender) === 'M' ? 'selected' : '' }}>Male</option>
-                <option value="F" {{ old('gender', $user->gender) === 'F' ? 'selected' : '' }} >Female</option>
+                <option value="F" {{ old('gender', $user->gender) === 'F' ? 'selected' : '' }}>Female</option>
                 <option value="O" {{ old('gender', $user->gender) === 'O' ? 'selected' : '' }}>Other</option>
             </select>
 
             <x-input-error class="mt-2" :messages="$errors->get('gender')" />
+        </div>
+
+        <div>
+            <x-input-label for="Default Delivery address" :value="__('Defaut Delivery Address')" />
+            <x-text-input id="default_delivery_address" name="default_delivery_address" type="text" class="mt-1 block w-full" :value="old('default_delivery_address', $user->default_delivery_address)"
+                 autofocus autocomplete="name" />
+            <x-input-error class="mt-2" :messages="$errors->get('default_delivery_address')" />
+        </div>
+
+        <div>
+            <x-input-label for="nif" :value="__('Nif')" />
+            <x-text-input id="nif" name="nif" type="text" class="mt-1 block w-full" :value="old('nif', $user->nif)"
+                autofocus autocomplete="name" />
+            <x-input-error class="mt-2" :messages="$errors->get('nif')" />
+        </div>
+
+        <div>
+            <x-input-label for="default_payment_type" :value="__('Default Payment Type')" />
+
+            <select id="default_payment_type" name="default_payment_type"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-indigo-200">
+                <option value="MB WAY" {{ old('default_payment_type', $user->default_payment_type) === 'MB WAY' ? 'selected' : '' }}>Mb Way</option>
+                <option value="Visa" {{ old('default_payment_type', $user->default_payment_type) === 'Visa' ? 'selected' : '' }}>Visa</option>
+                <option value="PayPal" {{ old('default_payment_type', $user->default_payment_type) === 'PayPal' ? 'selected' : '' }}>PayPal</option>
+            </select>
+
+            <x-input-error class="mt-2" :messages="$errors->get('default_payment_type')" />
+        </div>
+
+        <div class="mt-4">
+            <x-input-label for="photo" :value="__('Profile Photo')" />
+            <input id="photo" class="block mt-1 w-full" type="file" name="photo" accept="image/*" />
+            <x-input-error :messages="$errors->get('photo')" class="mt-2" />
         </div>
 
         <div class="flex items-center gap-4">
