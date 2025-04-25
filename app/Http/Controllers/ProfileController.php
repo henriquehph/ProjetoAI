@@ -12,9 +12,13 @@ use App\FuncoesAux\funcoesMap;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
+    public function show()
+    {   
+        
+        $user = Auth::user();
+
+        return view('profile.profile', compact('user')); // Assuming the view is resources/views/profile/show.blade.php
+    }
     public function edit(Request $request): View
     {
         $user = $request->user();
@@ -29,7 +33,7 @@ class ProfileController extends Controller
                 'membership' => $user->type,
                 'gender' => funcoesMap::mapGender($user->gender),
                 'default_delivery_address' => $user->default_delivery_address,
-                'nif'=> $user->nif,
+                'nif' => $user->nif,
                 'default_payment_type' => $user->default_payment_type,
                 'photo' => $user->photo,
 
@@ -44,7 +48,7 @@ class ProfileController extends Controller
     {
         $user = $request->user();
 
-        $request->validate([
+        $request->validate(rules: [
             'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $user->id],
             'name' => ['required', 'string', 'max:255'],
             'password' => ['nullable', 'confirmed', 'min:8'],
@@ -54,6 +58,13 @@ class ProfileController extends Controller
             'default_payment_type' => ['nullable', 'in: Visa,PayPal,MB WAY'],
             'photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10240'],
         ]);
+
+
+        // Debug the validated data
+        //dd($request->validated());
+
+        // Debug all incoming data
+        //dd($request->all());
 
         $user->fill($request->validated());
 

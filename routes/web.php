@@ -17,6 +17,7 @@ Route::get('/dashboard', function () { //Redireciona para a dashboard
 Auth::routes(['verify' => true]); // Verificações de email;
 
 Route::middleware('auth')->group(function () { //Operações CRUD
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -24,6 +25,7 @@ Route::middleware('auth')->group(function () { //Operações CRUD
 
 require __DIR__.'/auth.php';
 
+Route::get('/employee/edit/{id}', [ProfileController::class, 'edit'])->name('employee.edit');
 
 //Página para carregar o cartão
 //Um get para mostrar o formulário de carregamento do cartão
