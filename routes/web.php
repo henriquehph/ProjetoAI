@@ -18,7 +18,7 @@ Auth::routes(['verify' => true]); // Verificações de email;
 
 Route::middleware('auth')->group(function () { //Operações CRUD
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
@@ -34,8 +34,6 @@ Route::get('/add-funds', [FundsController::class, 'showAddFundsPage'])->middlewa
 // Route para processar o pagamento
 //Post para processar o pagamento
 Route::post('/add-funds', [FundsController::class, 'addFunds'])->middleware('verified');
-
-Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 
 // Mostrar a página de pagamento de membership
 Route::get('/membership/pay', [MembershipController::class, 'showPaymentForm'])->name('payments.pay');

@@ -17,7 +17,17 @@ class ProfileController extends Controller
         
         $user = Auth::user();
 
-        return view('profile.profile', compact('user')); // Assuming the view is resources/views/profile/show.blade.php
+        return view('profile.profile', [
+            'user' => $user,
+            'balance' => $user->card->balance ?? 0,
+            'membership' => $user->type,
+            'gender' => funcoesMap::mapGender($user->gender),
+            'default_delivery_address' => $user->default_delivery_address,
+            'nif' => $user->nif,
+            'default_payment_type' => $user->default_payment_type,
+            'photo' => $user->photo,
+
+        ]);
     }
     public function edit(Request $request): View
     {
