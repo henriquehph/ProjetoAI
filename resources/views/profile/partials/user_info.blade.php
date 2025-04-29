@@ -6,9 +6,11 @@
 
     </header>
 
+    <br>
+
     <div>
         <x-input-label for="name" :value="__('Name')" />
-        <div class="mt-1 block w-full border-2 border-gray-300 p-2 bg-white rounded-lg">
+        <div class="mt-1 block w-full border-2 border-gray-300 shadow sm:rounded-lg p-2 bg-white rounded-lg">
             {{ $user->name }}
         </div>
     </div>
@@ -17,10 +19,10 @@
 
     <div>
         <x-input-label for="email" :value="__('Email')" />
-        <div class="mt-1 block w-full border-2 border-gray-300 p-2 bg-white rounded-lg">
+        <div class="mt-1 block w-full border-2 border-gray-300 shadow sm:rounded-lg  p-2 bg-white rounded-lg">
             {{ $user->email }}
         </div>
-    
+
 
         @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && !$user->hasVerifiedEmail())
             <div>
@@ -46,7 +48,7 @@
 
     <div>
         <x-input-label for="Gender" :value="__('Gender')" />
-        <div class="mt-1 block w-full border-2 border-gray-300 p-2 bg-white rounded-lg">
+        <div class="mt-1 block w-full border-2 border-gray-300 shadow sm:rounded-lg p-2 bg-white rounded-lg">
             {{ $user->gender }}
         </div>
     </div>
