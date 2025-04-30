@@ -25,7 +25,7 @@ class ProfileController extends Controller
             'default_delivery_address' => $user->default_delivery_address,
             'nif' => $user->nif,
             'default_payment_type' => $user->default_payment_type,
-            'photo' => $user->photo,
+            'photo' => $user->photo ?: "No photo uploaded",
 
         ]);
     }

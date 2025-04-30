@@ -1,5 +1,3 @@
-<br>
-
 <section>
 
     <div>
@@ -10,7 +8,7 @@
     </div>
 
     <br>
-    
+
     <div>
         <x-input-label for="default_payment_type" :value="__('Default Payment Type')" />
         <div class="mt-1 block w-full border-2 border-gray-300 shadow sm:rounded-lg p-2 bg-white rounded-lg">
