@@ -16,16 +16,20 @@ class ProfileController extends Controller
     {   
         
         $user = Auth::user();
+        if ($user->type === 'employee') {
+            // Página para employees
+            return view('profile.profile_employee', [
+                'user' => $user,
+                'photo' => $user->photo ?: "No photo uploaded",
+    
+            ]);
+        }
 
-        return view('profile.profile', [
+        return view('profile.profile', [  
             'user' => $user,
-            'balance' => $user->card->balance ?? 0,
             'membership' => $user->type,
+            'balance' => $user->card->balance ?? 0,
             'gender' => funcoesMap::mapGender($user->gender),
-            'default_delivery_address' => $user->default_delivery_address,
-            'nif' => $user->nif,
-            'default_payment_type' => $user->default_payment_type,
-            'photo' => $user->photo ?: "No photo uploaded",
 
         ]);
     }
@@ -42,10 +46,6 @@ class ProfileController extends Controller
                 'balance' => $user->card->balance ?? 0,
                 'membership' => $user->type,
                 'gender' => funcoesMap::mapGender($user->gender),
-                'default_delivery_address' => $user->default_delivery_address,
-                'nif' => $user->nif,
-                'default_payment_type' => $user->default_payment_type,
-                'photo' => $user->photo,
 
             ]);
         }

@@ -49,7 +49,7 @@
     <div>
         <x-input-label for="Gender" :value="__('Gender')" />
         <div class="mt-1 block w-full border-2 border-gray-300 shadow sm:rounded-lg p-2 bg-white rounded-lg">
-            {{ $user->gender }}
+            {{ $gender }}
         </div>
     </div>
 

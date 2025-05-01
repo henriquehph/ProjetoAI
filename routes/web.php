@@ -18,8 +18,9 @@ Auth::routes(['verify' => true]); // Verificações de email;
 
 Route::middleware('auth')->group(function () { //Operações CRUD
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/employee', [ProfileController::class, 'show'])->name('employee.show');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::get('/employee/edit', [ProfileController::class, 'edit'])->name('employee.edit');
+    Route::get('/profile/employee/edit', [ProfileController::class, 'edit'])->name('employee.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
