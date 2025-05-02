@@ -13,19 +13,19 @@ use App\FuncoesAux\funcoesMap;
 class ProfileController extends Controller
 {
     public function show()
-    {   
-        
+    {
+
         $user = Auth::user();
         if ($user->type === 'employee') {
             // Página para employees
             return view('profile.profile_employee', [
                 'user' => $user,
-                'photo' => $user->photo ?: "No photo uploaded",
-    
+                'photo' => $user->photo,
+                'gender' => funcoesMap::mapGender($user->gender),
             ]);
         }
 
-        return view('profile.profile', [  
+        return view('profile.profile', [
             'user' => $user,
             'membership' => $user->type,
             'balance' => $user->card->balance ?? 0,
@@ -45,8 +45,6 @@ class ProfileController extends Controller
                 'user' => $user,
                 'balance' => $user->card->balance ?? 0,
                 'membership' => $user->type,
-                'gender' => funcoesMap::mapGender($user->gender),
-
             ]);
         }
     }
@@ -71,7 +69,7 @@ class ProfileController extends Controller
 
 
         // Debug the validated data
-        //dd($request->validated());
+        dd($request->validated());
 
         // Debug all incoming data
         //dd($request->all());
@@ -83,7 +81,7 @@ class ProfileController extends Controller
         }
 
         $user->save();
-
+        
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
 
     }
