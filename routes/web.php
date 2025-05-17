@@ -21,7 +21,7 @@ Route::middleware('auth')->group(function () { //Operações CRUD
     Route::get('/profile/employee', [ProfileController::class, 'show'])->name('employee.show');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::get('/profile/employee/edit', [ProfileController::class, 'edit'])->name('employee.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update'); //alterar para put 
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 

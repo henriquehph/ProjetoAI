@@ -68,10 +68,10 @@ class ProfileController extends Controller
         ]);
 
 
-        // Debug the validated data
-        dd($request->validated());
+        // Debug todos os dados validados
+        //dd($request->validated());
 
-        // Debug all incoming data
+        // Debug - todos os dados do request
         //dd($request->all());
 
         $user->fill($request->validated());
@@ -82,7 +82,7 @@ class ProfileController extends Controller
 
         $user->save();
         
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route('profile.show')->with('status', 'profile-updated');
 
     }
 
