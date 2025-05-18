@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\FuncoesAux\funcoesMap;
 use App\FuncoesAux\funcoesVerificacao;
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use App\Models\Card;
 
 class RegisteredUserController extends Controller
 {
@@ -37,7 +39,7 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'gender' => ['required', 'in:male,female,other'],
             'address' => ['nullable', 'string', 'max:255'], // Nullable -> Opcional
-            'nif' => ['nullable', 'string', 'max:20'],
+            'nif' => ['nullable', 'regex:/^\d{9}$/'],
             'payment_info' => ['nullable', 'string', 'max:255'],
             'photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10240'],
         ]);
@@ -48,11 +50,19 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'gender' => $request->gender,
+            'gender' => funcoesMap::mapGender($request->gender), // Mapeia o género para M, F ou O
             'address' => $request->address,
             'nif' => $request->nif,
             'payment_info' => $request->payment_info,
             'photo' => $request->photo,
+            'blocked' => 0, // 0 -> Não bloqueado, 1 -> Bloqueado
+            'type' => 'pending_member', // Tipo de utilizador
+        ]);
+
+        Card::create([
+            'id' => $user->id,  // Associate the card with the user
+            'balance' => 0,  // Starting balance for the card
+            'card_number' => rand(100000, 999999), // Generate a 6-digit card number
         ]);
 
         event(new Registered($user));

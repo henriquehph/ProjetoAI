@@ -22,4 +22,5 @@ class funcoesVerificacao
         // Se a foto não for válida, retorna null
         return null;
     }
+
 }
