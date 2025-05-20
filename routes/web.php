@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\FundsController; 
 use App\Http\Controllers\MembershipController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -16,14 +18,18 @@ Route::get('/dashboard', function () { //Redireciona para a dashboard
 
 Auth::routes(['verify' => true]); // Verificações de email;
 
-Route::middleware('auth')->group(function () { //Operações CRUD
+Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
-    Route::get('/profile/employee', [ProfileController::class, 'show'])->name('employee.show');
+
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+        
     Route::get('/profile/employee/edit', [ProfileController::class, 'edit'])->name('employee.edit');
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update'); //alterar para put 
+        
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+      
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+        
 
 require __DIR__.'/auth.php';
 

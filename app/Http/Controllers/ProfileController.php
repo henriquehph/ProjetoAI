@@ -9,21 +9,18 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use App\FuncoesAux\funcoesMap;
-
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use App\Http\Controllers\Controller;
 class ProfileController extends Controller
 {
+
+    use AuthorizesRequests;
     public function show()
     {
-
+        
         $user = Auth::user();
-        if ($user->type === 'employee') {
-            // Página para employees
-            return view('profile.profile_employee', [
-                'user' => $user,
-                'photo' => $user->photo,
-                'gender' => funcoesMap::mapGender($user->gender),
-            ]);
-        }
+        
+        $this->authorize('view', $user);
 
         return view('profile.profile', [
             'user' => $user,
@@ -36,6 +33,7 @@ class ProfileController extends Controller
     public function edit(Request $request): View
     {
         $user = $request->user();
+        $this->authorize('view', $user);
 
         if ($user->type === 'employee') {
             // Página para employees
