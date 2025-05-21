@@ -4,17 +4,18 @@
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
                 <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                     <div class="max-w-xl">
-                        @can('viewMemberInfo', $user)
+
+                        @if($user->type == 'member' || $user->type == 'board' || $user->type == 'pending_member')
                             @include('profile.partials.membership_info', ['user' => $user])
                             @include('profile.partials.user_info', ['user' => $user])
-                             <br>
+                            <br>
                             @include('profile.partials.member_info', ['user' => $user])
                             <br>
-                        @else
+                        @elseif ($user->type == 'employee')
                             @include('profile.partials.user_info', ['user' => $user])
                             <br>
-                        @endcan
-                        
+                        @endif
+
                         @include('profile.partials.photo', ['user' => $user])
                         <br>
 

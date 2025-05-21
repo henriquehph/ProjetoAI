@@ -33,4 +33,16 @@ class funcoesMap
             default => throw new \InvalidArgumentException("Invalid payment type: $input"),
         };
     }
+
+    public static function mapMembershipType(string $input): string
+    {
+        $input = strtolower(trim($input));
+
+        return match ($input) {
+            'pending_member' => 'Pending Activation',
+            'board' => 'Board Member',
+            'member' => 'Active',
+            default => throw new \InvalidArgumentException("Invalid membership type: $input"),
+        };
+    }
 }

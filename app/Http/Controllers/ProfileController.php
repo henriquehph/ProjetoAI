@@ -17,14 +17,14 @@ class ProfileController extends Controller
     use AuthorizesRequests;
     public function show()
     {
-        
+
         $user = Auth::user();
-        
+
         $this->authorize('view', $user);
 
         return view('profile.profile', [
             'user' => $user,
-            'membership' => $user->type,
+            'membership' => funcoesMap::mapMembershipType($user->type),
             'balance' => $user->card->balance ?? 0,
             'gender' => funcoesMap::mapGender($user->gender),
 
@@ -35,17 +35,13 @@ class ProfileController extends Controller
         $user = $request->user();
         $this->authorize('view', $user);
 
-        if ($user->type === 'employee') {
-            // Página para employees
-            return view('profile.edit_employee', compact('user'));
-        } else {
-            return view('profile.edit', [
-                'user' => $user,
-                'balance' => $user->card->balance ?? 0,
-                'membership' => $user->type,
-            ]);
-        }
+        return view('profile.edit', [
+            'user' => $user,
+            'balance' => $user->card->balance ?? 0,
+            'membership' => funcoesMap::mapMembershipType($user->type),
+        ]);
     }
+
 
     /**
      * Update the user's profile information.
@@ -53,6 +49,7 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $user = $request->user();
+        $this->authorize('view', $user);
 
         $request->validate(rules: [
             'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $user->id],
@@ -79,7 +76,7 @@ class ProfileController extends Controller
         }
 
         $user->save();
-        
+
         return Redirect::route('profile.show')->with('status', 'profile-updated');
 
     }
@@ -89,11 +86,14 @@ class ProfileController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+
+
         $request->validateWithBag('userDeletion', [
             'password' => ['required', 'current_password'],
         ]);
 
         $user = $request->user();
+        $this->authorize('view', $user);
 
         Auth::logout();
 

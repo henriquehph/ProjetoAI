@@ -23,8 +23,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
         
-    Route::get('/profile/employee/edit', [ProfileController::class, 'edit'])->name('employee.edit');
-        
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
       
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
