@@ -31,6 +31,10 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
+Route::get('/catalog', function () {
+    return view('catalog');
+});
+
 
 
 //Página para carregar o cartão
