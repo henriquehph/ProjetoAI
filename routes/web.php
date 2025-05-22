@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\FundsController; 
 use App\Http\Controllers\MembershipController;
+use App\Http\Controllers\UserController;
 
 
 Route::get('/', function () {
@@ -28,6 +29,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
         
+Route::get('usere/create', [UserController::class, 'create']);
+Route::post('user', [UserController::class, 'store']);
 
 require __DIR__.'/auth.php';
 
