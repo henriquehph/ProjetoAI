@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\FundsController; 
 use App\Http\Controllers\MembershipController;
+use App\Http\Controllers\CatalogController;
 
 
 Route::get('/', function () {
@@ -31,9 +32,9 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('/catalog', function () {
-    return view('catalog');
-});
+//Pagina para carregar catálogo
+//get pra listar os valeu
+Route::get('catalog', [CatalogController::class, 'catalogPage']);
 
 
 

@@ -1,17 +1,35 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-           
-        </h2>
-    </x-slot>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                   
-                </div>
-            </div>
-        </div>
-    </div>
-</x-app-layout>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Styles -->
+    <link href="./output.css" rel="stylesheet">
+    <title>Catalog of Products</title>
+</head>
+<body>
+    <table>
+        <thead><!--deve ser ma ideia fazer isto primeiro com base html pra depois fazer com tailwind na msm..-->
+            <tr>
+            <th>Product</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($Product as $product)
+            <tr>
+                <td>{{ $product->name }}</td>
+                <td>{{ $product->photo }}</td>
+                <!--<td>{{ $product->type }}</td>-->
+                <td>{{ $product->price }}</td>
+                <td>{{ $product->description }}</td> <!--theory says its right-->
+            </tr>
+        @endforeach
+        </tbody>
+    </table>
+</body>
+</html>
