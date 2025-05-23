@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-class Products 
+class Products  //names of possible values
 {
     public static $dbProducts = null; 
     public static $names = [
