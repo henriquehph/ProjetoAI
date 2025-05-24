@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\FundsController; 
 use App\Http\Controllers\MembershipController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\CatalogController;
 
 
@@ -29,6 +30,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
         
+Route::get('user/create', [UserController::class, 'create'])->name('user.create');
+Route::post('user', [UserController::class, 'store'])->name('user.store');
+Route::get('users', [UserController::class, 'index'])->name('users.index');
+Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
 
 require __DIR__.'/auth.php';
 
