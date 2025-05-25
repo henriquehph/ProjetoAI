@@ -17,30 +17,55 @@
 </head>
 
 <body>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Type</th>
-                <th>blocked</th>
-                
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($users as $user)
-                <tr>
-                    <td>{{ $user->id }}</td>
-                    <td>{{ $user->name }}</td>
-                    <td>{{ $user->email }}</td>
-                    <td>{{ $user->type }}</td>
-                    <td>{{ $user->blocked }}</td>
-                    
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+    @extends('layout')
+    @section('header-title', 'List of Users')
+    @section('main')
+        <div class="flex justify-center">
+            <div class="my-4 p-6 bg-white dark:bg-gray-900 overflow-hidden
+                 shadow-sm sm:rounded-lg text-gray-900 dark:text-gray-50">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Type</th>
+                            <th>blocked</th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($users as $user)
+                            <td>
+                            <td>{{ $user->id }}</td>
+                            <td>{{ $user->name }}</td>
+                            <td>{{ $user->email }}</td>
+                            <td>{{ $user->type }}</td>
+                            <td>{{ $user->blocked }}</td>
+                            <td>
+                                <x-table.icon-show class="ps-3 px-0.5" href="{{ route('users.show', ['user' => $user]) }}" />
+                            </td>
+                            <td>
+                                <x-table.icon-edit class="px-0.5" href="{{ route('users.edit', ['user' => $user]) }}" />
+                            </td>
+                            <td>
+                                <x-table.icon-delete class="px-0.5" action="{{ route('users.destroy', ['user' => $user]) }}" />
+                            </td>
+
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-4">
+                {{ $users->links() }}
+            </div>
+        </div>
+    @endsection
 </body>
 
 </html>

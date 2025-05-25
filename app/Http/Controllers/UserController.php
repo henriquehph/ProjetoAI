@@ -10,7 +10,7 @@ class UserController extends Controller
 {
     public function index(): View
     {
-        $allUsers = User::all();
+        $allUsers = User::paginate(20);
 
         //debug($allUsers);
 
@@ -27,7 +27,7 @@ class UserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         User::create($request->all());
-        return redirect('/users');
+        return redirect()->route('users.index');
     }
 
     public function edit(User $user): View
@@ -46,7 +46,18 @@ class UserController extends Controller
     public function update(Request $request, User $user): RedirectResponse
     {
         $user->update($request->all());
-        return redirect('/users');
+        return redirect()->route('users.index');
+    }
+
+    public function destroy(User $user): RedirectResponse
+    {
+        $user->delete();
+        return redirect()->route('users.index');
+    }
+
+    public function show(User $user): View
+    {
+        return view('users.show')->with('user', $user);
     }
 
 }

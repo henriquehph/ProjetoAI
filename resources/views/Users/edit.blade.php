@@ -1,22 +1,25 @@
+@extends('layout')
 
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('User') }}
-        </h2>
-    </x-slot>
+@section('header-title', $user->name)
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
+@section('main')
+    <div class="flex flex-col space-y-6">
+        <div class="p-4 sm:p-8 bg-white dark:bg-gray-900 shadow sm:rounded-lg">
+            <div class="max-full">
+                <section>
+                    <header>
+                        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                            Edit User "{{ $user->name }}"
+                        </h2>
+                        <p class="mt-1 text-sm text-gray-600 dark:text-gray-300 mb-6">
+                            Click on "Save" button to store the information.
+                        </p>
+                    </header>
 
                     <!-- Update User Form -->
                     @include('Users.partials.update-user-information-form')
-                </div>
+                </section>
             </div>
-
-            <br>
-
-
         </div>
     </div>
+@endsection
