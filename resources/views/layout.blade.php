@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>ESTG</title>
+    <title>Site</title>
     <style>
         table,
         th,
@@ -43,14 +43,16 @@
 </head>
 
 <body>
-    <div class="main">
-        <header>
-            <h1 class="text-3xl p-4 bg-gray-700 text-gray-100">
-                @yield('header-title')
-            </h1>
-        </header>
-        <div class="content">
-            @yield('main')
+    <div class="bg-gray-100 h-full w-full">
+        <div class="main mx-auto w-1/2">
+            <header>
+                <h1 class="text-3xl p-4 bg-gray-700 text-gray-100">
+                    @yield('header-title')
+                </h1>
+            </header>
+            <div class="content">
+                @yield('main')
+            </div>
         </div>
     </div>
 </body>

@@ -1,18 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layout')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>User</title>
-</head>
+@section('header-title', $user->name)
 
-<body>
-    <h2>User "{{ $user->name }}"</h2>
-    <div>
-        @include('Users.partials.user_fields', ['mode' => 'show'])
+@section('main')
+    <div class="flex flex-col space-y-6">
+        <div class="p-4 sm:p-8 bg-white dark:bg-gray-900 shadow sm:rounded-lg">
+            <div class="max-full">
+                <section>
+                    <header>
+                        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                            Show User "{{ $user->name }}"
+                        </h2>
+                    </header>
+
+                    @include('Users.partials.user_fields', ['mode' => 'show'])
+
+                </section>
+            </div>
+        </div>
     </div>
-</body>
 
-</html>
+
+
+@endsection

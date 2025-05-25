@@ -37,8 +37,9 @@ class UserController extends Controller
         }
         return view('users.edit', [
             'user' => $user,
+            'email' => $user->hasVerifiedEmail() && $user->email ? $user->email : 'No email provided',
             'membership' => funcoesMap::mapMembershipType($user->type),
-            'balance' => $user->card->balance ?? 0,
+            'blocked' => funcoesMap::mapBlocked($user->blocked),
             'gender' => funcoesMap::mapGender($user->gender),
         ]);
     }
@@ -57,7 +58,14 @@ class UserController extends Controller
 
     public function show(User $user): View
     {
-        return view('users.show')->with('user', $user);
-    }
 
+        return view('users.show', [
+            'user' => $user,
+            'email' => $user->hasVerifiedEmail() && $user->email ? $user->email : 'No email provided',
+            'membership' => funcoesMap::mapMembershipType($user->type),
+            'blocked' => funcoesMap::mapBlocked($user->blocked),
+            'gender' => funcoesMap::mapGender($user->gender),
+        ]);
+
+    }
 }

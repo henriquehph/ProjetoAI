@@ -41,8 +41,22 @@ class funcoesMap
         return match ($input) {
             'pending_member' => 'Pending Activation',
             'board' => 'Board Member',
-            'member' => 'Active',
+            'member' => 'Active Member',
+            'employee' => 'Employee',
             default => throw new \InvalidArgumentException("Invalid membership type: $input"),
         };
     }
+
+    public static function mapBlocked(string $input): string
+    {
+        $input = strtolower(trim($input));
+
+        return match ($input) {
+            '1' => 'Blcoked',
+            '0' => 'Not Blocked',
+           
+            default => throw new \InvalidArgumentException("Invalid block type: $input"),
+        };
+    }
+
 }
