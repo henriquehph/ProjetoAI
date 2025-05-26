@@ -1,70 +1,43 @@
-@extends('layouts.main')
+@extends('layouts.Layout')
 
-@section('header-title', 'Introduction')
-
+@section('title', 'Catalog')
 @section('main')
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-     Styles 
-    <link href="./app.css" rel="stylesheet">
-    <title>Catalog of Products</title>
-</head>
-<x-app-layout>
-    <div class="container">
-        <h2>Add Funds to Your Card</h2>
-        @foreach ($Product as $product)
-            <tr>
-                <td>{{ $product->name }}</td>
-                <td>{{ $product->photo }}</td>
-                <td>{{ $product->type }}</td>
-                <td>{{ $product->price }}</td>
-                <td>{{ $product->description }}</td>
-            </tr>
-        @endforeach
-    </div>
-</x-app-layout>
-@endsection
-<!--
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-     Styles 
-    <link href="./app.css" rel="stylesheet">
-    <title>Catalog of Products</title>
-</head>
-
-<body>
-    <table>
-        <thead>deve ser ma ideia fazer isto primeiro com base html pra depois fazer com tailwind na msm.
-            <tr>
-            <th>Product</th>
-            <th>Photo</th>
-            <th>Category</th>
-            <th>Price</th>
-            <th>Description</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($Product as $product)
-            <tr>
-                <td>{{ $product->name }}</td>
-                <td>{{ $product->photo }}</td>
-                <td>{{ $product->type }}</td>
-                <td>{{ $product->price }}</td>
-                <td>{{ $product->description }}</td> <!--theory says its right (its not)
-            </tr>
-        @endforeach
-        </tbody>
-    </table>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link href="./app.css" rel="stylesWheet">
+        <title>Catalog of Products</title>
+    </head>
+        <div class="container">
+            @section('header-title', 'List of courses')
+            <h2 class="text-center text-lg text-blue-800">List of items</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Photo</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($allProducts as $product) <!--Var name is right , this part is also right-->
+                        <tr>
+                            <td>{{ $product->name }}</td>
+                            <td><img src="{{ $product->photo }}" alt="{{ $product->name }}" /></td>
+                            <td>{{ $product->type }}</td>
+                            <td>{{ $product->price }}</td>
+                            <td>{{ $product->description }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    
 </body>
-
 </html>
