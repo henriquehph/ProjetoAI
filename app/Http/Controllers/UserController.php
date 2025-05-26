@@ -46,7 +46,27 @@ class UserController extends Controller
 
     public function update(Request $request, User $user): RedirectResponse
     {
-        $user->update($request->all());
+        //$user->update($request->all());
+
+        //dd($request->all()); //debug
+        $validated = $request->validate([
+            'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $user->id],
+            'name' => ['required', 'string', 'max:255'],
+            'password' => ['nullable', 'confirmed', 'min:8'],
+            'gender' => ['required', 'in:M,F,O'],
+            'nif' => ['nullable', 'regex:/^\d{9}$/'],
+            'default_delivery_address' => ['nullable', 'string', 'max:255'],
+            'default_payment_type' => ['nullable', 'in:Visa,PayPal,MB WAY'],
+            'photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10240'],
+            'type' => ['required', 'in:pending_member,board,member,employee'],
+            'blocked' => ['required', 'in:0,1'],
+        ]);
+
+        //dd($validated); //debug
+
+
+        $user->update($validated);
+
         return redirect()->route('users.index');
     }
 

@@ -3,11 +3,18 @@
     $readonly = $mode == 'show';
 @endphp
 
+
 <x-field.input name="name" label="Name" :readonly="$readonly" value="{{ $user->name }}" />
+@error('name')
+    <div class="text-red-500">{{ $message }}</div>
+@enderror
 
-<x-field.input name="Email" label="Email" :readonly="$readonly" value="{{ $email }}" />
+<x-field.input name="email" label="Email" :readonly="$readonly" value="{{ $email }}" />
+@error('email')
+    <div class="text-red-500">{{ $message }}</div>
+@enderror
 
-<x-field.select name="Type" label="Type" width="md" :readonly="$readonly" value="{{ $user->type }}" :options="[
+<x-field.select name="type" label="Type" width="md" :readonly="$readonly" value="{{ $user->type }}" :options="[
         'pending_member' => 'Pending Activation',
         'board' => 'Board Member',
         'member' => 'Active Member',
@@ -15,25 +22,31 @@
     ]" />
 
 
-<x-field.select name="Blocked" label="Blocked" width="md" :readonly="$readonly" value="{{ $user->blocked}}" :options="[
+<x-field.select name="blocked" label="Blocked" width="md" :readonly="$readonly" value="{{ $user->blocked}}" :options="[
         '1' => 'Blocked',
         '0' => 'Not Blocked',
     ]" />
 
 
-<x-field.select name="Gender" label="Gender" width="md" :readonly="$readonly" value="{{ $gender }}" :options="[
+<x-field.select name="gender" label="Gender" width="md" :readonly="$readonly" value="{{ $user->gender }}" :options="[
         'M' => 'Male',
         'F' => 'Female',
     ]" />
 
-@if ($user->type != 'Employee')
-    <x-field.input name="Nif" label="nif" :readonly="$readonly" value="{{ $user->nif }}" />
-    <x-field.input name="Delivery Address" label="gender" :readonly="$readonly"
-        value="{{ $user->default_delivery_address }}" />
-    <x-field.select name="Payment Type" label="Payment Type" width="md" :readonly="$readonly"
-        value="{{ $user->default_payment_type }}" :options="[
-                'visa' => 'Visa',
-                'paypal' => 'PayPal',
-                'mb way' => 'MB WAY',
-            ]" />
-@endif
+
+<x-field.input name="nif" label="NIF" :readonly="$readonly" value="{{ $user->nif }}" />
+@error('nif')
+    <div class="text-red-500">{{ $message }}</div>
+@enderror
+
+<x-field.input name="default_delivery_address" label="Delivery Address" :readonly="$readonly"
+    value="{{ $user->default_delivery_address }}" />
+@error('default_delivery_address')
+    <div class="text-red-500">{{ $message }}</div>
+@enderror
+<x-field.select name='default_payment_type' label="Payment Type" width="md" :readonly="$readonly"
+    value="{{ $user->default_payment_type }}" :options="[
+        'Visa' => 'Visa',
+        'PayPal' => 'PayPal',
+        'MB WAY' => 'MB WAY',   
+    ]" />
