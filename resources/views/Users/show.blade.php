@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('Layout')
 
 @section('header-title', $user->name)
 
