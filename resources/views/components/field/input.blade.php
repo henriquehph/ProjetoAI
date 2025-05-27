@@ -1,5 +1,5 @@
 @php
-    $widthClass = match ($width) {
+    $widthClass = match($width) {
         'full' => 'w-full',
         'xs' => 'w-20',
         'sm' => 'w-32',
@@ -21,11 +21,17 @@
     <label class="block font-medium text-sm text-gray-700 dark:text-gray-300" for="id_{{ $name }}">
         {{ $label }}
     </label>
-    <input id="id_{{ $name }}" name="{{ $name }}" type="{{ $type }}" value="{{ $value }}" class="appearance-none block
+    <input id="id_{{ $name }}" name="{{ $name }}" type="{{ $type }}" value="{{ $value }}"
+        class="appearance-none block
             mt-1 w-full
             bg-white dark:bg-gray-900
             text-black dark:text-gray-50
             border-gray-300 dark:border-gray-700
+            @error($name)
+                border-red-500 dark:border-red-500
+            @else
+                border-gray-300 dark:border-gray-700
+            @enderror
             focus:border-indigo-500 dark:focus:border-indigo-400
             focus:ring-indigo-500 dark:focus:ring-indigo-400
             rounded-md shadow-sm
@@ -33,5 +39,15 @@
             disabled:border-t-transparent disabled:border-x-transparent
             disabled:border-dashed
             disabled:opacity-100
-            disabled:select-none" @required($required) @disabled($readonly) autofocus="autofocus">
+            disabled:select-none"
+            @required($required)
+            @disabled($readonly)
+            autofocus="autofocus"
+            @error( $name) is-invalid @enderror
+        >
+    @error( $name )
+        <div class="text-sm text-red-500">
+            {{ $message }}
+        </div>
+    @enderror
 </div>
