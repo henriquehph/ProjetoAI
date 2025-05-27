@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Product extends Model
 {
@@ -49,5 +50,14 @@ class Product extends Model
     public function StockLow(): bool
     {
         return $this->stock <= $this->stock_lower_limit;
+    }
+
+    //Função para mostrar as fotos
+    public function getPhotoFullUrlAttribute() {
+        if ($this->photo && Storage::disk('public')->exists("products/{$this->photo}")) {
+            return asset("storage/products/{$this->photo}");
+        } else {
+            return asset("storage/products/anonymous.png");
+        }
     }
 }

@@ -14,7 +14,7 @@
         <div class="container">
             @section('header-title', 'List of courses')
             <h2 class="text-center text-lg text-blue-800">List of items</h2>
-            
+
             <table>
                 <thead>
                     <tr>
@@ -29,8 +29,9 @@
                     @foreach ($allProducts as $product) <!--Var name is right , this part is also right-->
                         <tr>
                             <td>{{ $product->name }}</td>
-                            <td><img src="{{ $product->photo }}" alt="{{ $product->name }}" /></td>
-                            <td>{{ $product->type }}</td>
+                            <!--<td><img src="{{ $product->photo }}" alt="{{ $product->name }}" /></td>-->
+                            <td><img src="{{ $product->photoFullUrl }}" alt="{{ $product->name }}" style="width: 45px; height: 45px; border-radius: 8px;"></td><!-- Mostrar fotos através da função -->
+                            <td>{{ $product->category_id }}</td> <!-- Alterei para category_id -->
                             <td>{{ $product->price }}</td>
                             <td>{{ $product->description }}</td>
                         </tr>
@@ -38,6 +39,6 @@
                 </tbody>
             </table>
         </div>
-    
+
 </body>
 </html>
