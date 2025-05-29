@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use App\FuncoesAux\funcoesMap;
+use App\Http\Requests\UserFormRequest;
 class UserController extends Controller
 {
     public function index(): View
@@ -44,31 +45,14 @@ class UserController extends Controller
         ]);
     }
 
-    public function update(Request $request, User $user): RedirectResponse
+
+    public function update(UserFormRequest $request, User $user): RedirectResponse
     {
-        //$user->update($request->all());
-
-        //dd($request->all()); //debug
-        $validated = $request->validate([
-            'email' => ['required', 'email', 'max:255', 'unique:users,email,' . $user->id],
-            'name' => ['required', 'string', 'max:255'],
-            'password' => ['nullable', 'confirmed', 'min:8'],
-            'gender' => ['required', 'in:M,F,O'],
-            'nif' => ['nullable', 'regex:/^\d{9}$/'],
-            'default_delivery_address' => ['nullable', 'string', 'max:255'],
-            'default_payment_type' => ['nullable', 'in:Visa,PayPal,MB WAY'],
-            'photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10240'],
-            'type' => ['required', 'in:pending_member,board,member,employee'],
-            'blocked' => ['required', 'in:0,1'],
-        ]);
-
-        //dd($validated); //debug
-
-
-        $user->update($validated);
-
+        $user->update($request->validated());
         return redirect()->route('users.index');
     }
+
+
 
     public function destroy(User $user): RedirectResponse
     {

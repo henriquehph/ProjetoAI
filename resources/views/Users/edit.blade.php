@@ -27,8 +27,10 @@
                         <br>
 
                         <div class="flex items-center gap-4">
+                            
                             <x-submit-button text="Save" type="success" />
-                            <x-hyperlink-text-button href="{{ route('users.index') }}" text="Cancel" type="primary" />
+                            <x-hyperlink-text-button href="{{ route('users.index') }}" text="Cancel" type="primary" /> 
+                
                         </div>
 
                     </form>
