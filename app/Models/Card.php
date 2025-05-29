@@ -19,4 +19,9 @@ class Card extends Model
     protected $casts = [
         'balance' => 'decimal:2',  // decimal com 2 casas decimais
     ];
+
+     public function card()
+    {
+        return $this->hasOne(User::class, 'id');
+    }
 }
