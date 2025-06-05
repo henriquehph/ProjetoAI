@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
@@ -44,7 +45,7 @@ require __DIR__.'/auth.php';
 
 //Pagina para carregar catálogo
 //get pra listar os valeu
-Route::get('catalog', [CatalogController::class, 'catalogPage'])->name('catalog');
+Route::get('catalog', [ProductController::class, 'index'])->name('catalog');
 
 
 

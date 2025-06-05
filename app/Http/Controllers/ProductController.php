@@ -13,6 +13,8 @@ class ProductController extends Controller
     public function index()
     {
         //
+        $allProducts = Product::paginate(10);
+        return view("Catalog.catalog", compact("allProducts"));
     }
 
     /**
