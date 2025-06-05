@@ -41,7 +41,7 @@
                                 </td>
                                 <td>
                                     <x-table.icon-delete class="px-0.5"
-                                        action="{{ route('users.destroy', ['user' => $user]) }}" />
+                                        action="{{ route('users.destroy', ['user' => $user], ) }}" />
                                 </td>
 
 

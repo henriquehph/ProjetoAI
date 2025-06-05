@@ -18,6 +18,7 @@
 </head>
 
 <body class="min-h-screen bg-gray-100">
+    @include('layouts.navigation')
     <div class="main mx-auto w-1/2">
         <header>
             <h1 class="text-3xl p-4 bg-gray-700 text-gray-100">

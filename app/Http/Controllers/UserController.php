@@ -8,6 +8,8 @@ use Illuminate\Http\RedirectResponse;
 use App\FuncoesAux\funcoesMap;
 use App\Http\Requests\UserFormRequest;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+
 class UserController extends Controller
 {
     public function index(): View
@@ -60,10 +62,21 @@ class UserController extends Controller
 
     public function destroy(User $user): RedirectResponse
     {
+        //Obter timestamp atual
         $now = Carbon::now();
+    
+        //Página atual
+        $page = request()->get('page', 1);
+        //dd($page); //debug
+
+        //Verificar que o user não se está a eliminar a ele mesmo
+        $current_user = Auth::user();
+        if($current_user->id === $user->id) {
+            return redirect()->route('users.index', ['page' => $page])->with('error', 'You cannot delete your own account.');
+        }
         $user->deleted_at = $now;
         $user->save();
-        return redirect()->route('users.index');
+        return redirect()->route('users.index', ['page' => $page]);
     }
 
     public function show(User $user): View
