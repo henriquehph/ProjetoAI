@@ -7,6 +7,7 @@ use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use App\FuncoesAux\funcoesMap;
 use App\Http\Requests\UserFormRequest;
+use Carbon\Carbon;
 class UserController extends Controller
 {
     public function index(): View
@@ -59,7 +60,9 @@ class UserController extends Controller
 
     public function destroy(User $user): RedirectResponse
     {
-        $user->delete();
+        $now = Carbon::now();
+        $user->deleted_at = $now;
+        $user->save();
         return redirect()->route('users.index');
     }
 

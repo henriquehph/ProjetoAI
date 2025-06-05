@@ -4,8 +4,7 @@
 
 @section('main')
     <div class="flex justify-center">
-        <div class="my-4 p-6 bg-white dark:bg-gray-900 overflow-hidden
-                                        shadow-sm sm:rounded-lg text-gray-900 dark:text-gray-50">
+        <div class="my-4 p-6 bg-white dark:bg-gray-900 shadow-sm sm:rounded-lg text-gray-900 dark:text-gray-50">
             <div class="flex items-center gap-4 mb-4">
                 <x-hyperlink-text-button href="{{ route('users.create') }}" text="Create a new User" type="success" />
             </div>
@@ -18,6 +17,7 @@
                             <th class="px-2 py-2 text-left">Email</th>
                             <th class="px-2 py-2 text-right hidden sm:table-cell">Type</th>
                             <th class="px-2 py-2 text-right hidden sm:table-cell">Blocked</th>
+                            <th class="px-2 py-2 text-right hidden sm:table-cell">Deleted At</th>
                             <th></th>
                             <th></th>
                             <th></th>
@@ -31,6 +31,7 @@
                                 <td class="px-2 py-2 text-left">{{ $user->email }}</td>
                                 <td class="px-2 py-2 text-right hidden sm:table-cell">{{ $user->type }}</td>
                                 <td class="px-2 py-2 text-right hidden sm:table-cell">{{ $user->blocked }}</td>
+                                <td class="px-2 py-2 text-right hidden sm:table-cell">{{ $user->deleted_at ?? 'Active' }}</td>
                                 <td>
                                     <x-table.icon-show class="ps-3 px-0.5"
                                         href="{{ route('users.show', ['user' => $user]) }}" />
@@ -49,7 +50,7 @@
                     </tbody>
                 </table>
             </div>
-            
+
             <div class="mt-4">
                 {{ $users->links() }}
             </div>

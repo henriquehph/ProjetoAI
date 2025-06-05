@@ -31,6 +31,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'gender',
         'default_payment_type',
         'default_payment_reference',
+        'deleted_at'
     ];
 
     /**
