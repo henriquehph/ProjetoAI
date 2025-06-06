@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Product extends Model
 {
@@ -57,7 +59,7 @@ class Product extends Model
         if ($this->photo && Storage::disk('public')->exists("products/{$this->photo}")) {
             return asset("storage/products/{$this->photo}");
         } else {
-            return asset("storage/products/anonymous.png");
+            return asset("storage/products/product_no_image.png");
         }
     }
 }

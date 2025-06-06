@@ -4,17 +4,52 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\ProductFormRequest;
+use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
+use App\Models\Category;
 
 class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request): View
     {
-        //
-        $allProducts = Product::paginate(10);
-        return view("Catalog.catalog", compact("allProducts"));
+        $filterByName = $request->query('name');
+        $filterPrice = $request->query('price');
+        $filterByCategories = $request->query('category');
+        $filterByDiscount = $request->query('discount');
+
+        $categories = Category::where('id', '<=', 10)->pluck('name', 'id');
+
+        $productsQuery = Product::query();
+
+
+        if ($filterByName !== null) {
+            $productsQuery->where('name', 'LIKE', '%' . $filterByName . '%');
+        }
+        if ($filterPrice === 'asc' || $filterPrice === 'desc') {
+            $productsQuery->orderBy('price', $filterPrice);
+        }
+        if ($filterByCategories !== null) {
+            $productsQuery->where('category_id', $filterByCategories);
+        }
+        if ($filterByDiscount !== null) {
+            $productsQuery->where('discount', $filterByDiscount);
+        }
+
+        $products = $productsQuery
+            ->with('category')
+            ->orderBy('name')
+            ->orderBy('category_id')
+            ->paginate(20)
+            ->withQueryString();
+
+        return view('products.index',
+            compact('products', 'filterByName', 'filterPrice', 'filterByCategories', 'filterByDiscount','categories')
+        );
     }
 
     /**
