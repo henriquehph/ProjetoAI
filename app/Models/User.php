@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -60,4 +61,50 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(Card::class, 'id');
     }
+
+    //Relação com a tabela Order
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function initials(): string
+    {
+        return Str::of($this->name)
+            ->explode(' ')
+            ->map(fn (string $name) => Str::of($name)->substr(0, 1))
+            ->implode('');
+    }
+
+    public function firstLastInitial(): string
+    {
+        $allNames = Str::of($this->name)
+            ->explode(' ');
+        $firstName = $allNames->first();
+        $lastName = $allNames->count() > 1 ? $allNames->last() : '';
+        return Str::of($firstName)->substr(0, 1)
+            ->append(' ')
+            ->append(Str::of($lastName)->substr(0, 1));
+    }
+
+    public function firstLastName(): string
+    {
+        $allNames = Str::of($this->name)
+            ->explode(' ');
+        $firstName = $allNames->first();
+        $lastName = $allNames->count() > 1 ? $allNames->last() : '';
+        return Str::of($firstName)
+            ->append(' ')
+            ->append(Str::of($lastName));
+    }
+
+    //Função para mostrar as fotos
+    public function getPhotoFullUrlAttribute() {
+        if ($this->photo_url && Storage::disk('public')->exists("users/{$this->photo_url}")) {
+            return asset("storage/users/{$this->photo_url}");
+        } else {
+            return asset("storage/users/anonymous.png");
+        }
+    }
+
 }

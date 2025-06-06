@@ -9,6 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                 <div class="max-w-xl">
+<<<<<<< HEAD
                     <div class="flex justify-between">
                         <!-- Card Balance -->
                         <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
@@ -56,6 +57,23 @@
             </div>
 
             <br>
+=======
+
+                    @if($user->type == 'member' || $user->type == 'board' || $user->type == 'pending_member')
+
+                                @include('profile.partials.membership_info', ['user' => $user]) <!-- HTML da membership -->
+
+                                <br>
+
+                                <!-- Update Profile Form -->
+                                @include('profile.partials.update-profile-information-form')
+                            </div>
+                        </div>
+
+                        <br>
+
+                    @endif
+>>>>>>> Projeto
 
             <!-- Update Password Form -->
             <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
@@ -64,12 +82,24 @@
                 </div>
             </div>
 
+<<<<<<< HEAD
             <!-- Delete User Form -->
             <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                 <div class="max-w-xl">
                     @include('profile.partials.delete-user-form')
                 </div>
             </div>
+=======
+            @if($user->type == 'member' || $user->type == 'board' || $user->type == 'pending_member')
+
+                <!-- Delete User Form -->
+                <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                    <div class="max-w-xl">
+                        @include('profile.partials.delete-user-form')
+                    </div>
+                </div>
+            @endif
+>>>>>>> Projeto
         </div>
     </div>
 </x-app-layout>

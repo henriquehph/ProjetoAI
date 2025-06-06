@@ -2,7 +2,11 @@
 
 namespace Database\Seeders;
 
+<<<<<<< HEAD
 class Products 
+=======
+class Products  //names of possible values
+>>>>>>> Projeto
 {
     public static $dbProducts = null; 
     public static $names = [

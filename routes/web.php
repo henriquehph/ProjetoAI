@@ -1,10 +1,14 @@
 <?php
 
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\FundsController; 
+use App\Http\Controllers\FundsController;
 use App\Http\Controllers\MembershipController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\CatalogController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -16,16 +20,57 @@ Route::get('/dashboard', function () { //Redireciona para a dashboard
 
 Auth::routes(['verify' => true]); // Verificações de email;
 
-Route::middleware('auth')->group(function () { //Operações CRUD
+Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
-    Route::get('/profile/employee', [ProfileController::class, 'show'])->name('employee.show');
+
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::get('/profile/employee/edit', [ProfileController::class, 'edit'])->name('employee.edit');
-    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update'); //alterar para put 
+
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::redirect('settings', 'settings/profile'); //Possivel conflito
+
+        Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
+        Volt::route('settings/password', 'settings.password')->name('settings.password');
+        Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
+
 });
 
+//Route::get('user/create', [UserController::class, 'create'])->name('user.create');
+//Route::post('user', [UserController::class, 'store'])->name('user.store');
+//Route::get('users', [UserController::class, 'index'])->name('users.index');
+//Route::get('users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+//Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
+//Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+//Route::get('users/{user}', [UserController::class, 'show'])->name('users.show');
+
+Route::resource('users', UserController::class);
+
+
+Route::resource('products', ProductController::class);
+Route::get('products/showcase', [ProductController::class, 'showCase'])->name('products.showcase');
+
+
+Route::resource('orders', OrderController::class);
+
+//Cart Routes
+//Show the Cart
+Route::get('cart', [CartController::class, 'show'])->name('cart.show');
+// Add a product to the cart:
+Route::post('cart/{product}', [CartController::class, 'addToCart'])->name('cart.add');
+// Remove a product from the cart:
+Route::delete('cart/{product}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+// Confirm (store) the cart and save products registration on the database:
+Route::post('cart', [CartController::class, 'confirm'])->name('cart.confirm');
+// Clear the cart:
+Route::delete('cart', [CartController::class, 'destroy'])->name('cart.destroy');
+
 require __DIR__.'/auth.php';
+
+//Pagina para carregar catálogo
+//get pra listar os valeu
+Route::get('catalog', [CatalogController::class, 'catalogPage'])->name('catalog');
 
 
 
