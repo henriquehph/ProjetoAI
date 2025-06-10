@@ -12,27 +12,57 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $allUsers = User::paginate(20);
+
+    $users = User::query();
+
+    if ($request->filled('name')) {
+        $users->where('name', 'like', '%' . $request->name . '%');
+    }
+
+    if ($request->filled('nif')) {
+        $users->where('nif', 'like', '%' . $request->nif . '%');
+    }
+
+    if ($request->filled('blocked')) {
+        $users->where('blocked', 'like', '%' . $request->blocked . '%');
+    }
+
+     if ($request->filled('gender')) {
+        $users->where('gender', 'like', '%' . $request->gender . '%');
+    }
+
+    
+     if ($request->filled('default_payment_type')) {
+        $users->where('default_payment_type', 'like', '%' . $request->default_payment_type . '%');
+    }
+
+
+    $users = $users->paginate(20)->withQueryString(); // preserve filters in pagination
+
+    return view('users.index', compact('users'));
+
+        //$allUsers = User::paginate(20);
 
         //debug($allUsers);
 
-        return view('users.index')->with('users', $allUsers);
+        //return view('users.index')->with('users', $allUsers);
 
 
     }
 
     public function create(): View
     {
-        return view('users.create');
+        $user =  new \App\Models\User(); // empty user object
+        return view('users.create')->with('user', $user);
     }
 
     public function store(Request $request): RedirectResponse
     {
         /* User::create($request->all());
         return redirect()->route('users.index'); */
-
+        //dd($request->all()); // debug
         User::create($request->validated());
         return redirect()->route('users.index');
     }

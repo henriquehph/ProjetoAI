@@ -25,6 +25,13 @@
 
                         <br>
 
+                        <div>
+                            @include('users.partials.password-form')
+                        </div>
+
+
+                        <br>
+
                         <div class="flex items-center gap-4">
                             
                             <x-submit-button text="Save" type="success" />
@@ -32,6 +39,7 @@
                 
                         </div>
 
+                        
                     </form>
 
                 </section>

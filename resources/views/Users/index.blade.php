@@ -9,6 +9,13 @@
                 <x-hyperlink-text-button href="{{ route('users.create') }}" text="Create a new User" type="success" />
             </div>
             <div class="font-base text-sm text-gray-700 dark:text-gray-300">
+
+                <div>
+                    @include('users.partials.filter-form')
+                </div>
+
+                <br>
+                
                 <table class="table-auto border-collapse">
                     <thead>
                         <tr class="border-b-2 border-b-gray-400 dark:border-b-gray-500 bg-gray-100 dark:bg-gray-800">
