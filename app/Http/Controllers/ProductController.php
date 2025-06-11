@@ -12,11 +12,10 @@ use App\Models\Category;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index(Request $request): View
     {
+
         $filterByName = $request->query('name');
         $filterPrice = $request->query('price');
         $filterByCategories = $request->query('category');

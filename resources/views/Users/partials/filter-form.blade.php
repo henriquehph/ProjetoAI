@@ -6,6 +6,7 @@
 
     <x-filter-select name="gender" label="Gender" :options="['M' => 'Male', 'F' => 'Female', 'O' => 'Other']" />
     <x-filter-select name="default_payment_type" label="Payment Type" :options="['Visa' => 'VISA', 'PayPal' => 'PayPal', 'MB WAY' => 'Mb Way']" />
+     <x-filter-select name="type" label="Membership Type" :options="['board' => 'Board Member', 'member' => 'Member', 'employee' => 'Employees', 'pending_member' => 'Pending Activation']" />
 
     <div class="col-span-3 flex gap-4">
         <button type="submit" class="rounded-full bg-blue-600 text-white px-6 py-2 font-medium 
