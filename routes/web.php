@@ -11,7 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
-
+use Livewire\Volt\Volt;
 
 Route::get('/', function () {
     return view('welcome');
@@ -66,6 +66,10 @@ Route::resource('orders', OrderController::class);
     Route::post('cart', [CartController::class, 'confirm'])->name('cart.confirm');
     // Clear the cart:
     Route::delete('cart', [CartController::class, 'destroy'])->name('cart.destroy');
+
+    
+        Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
+
 
 require __DIR__.'/auth.php';
 
