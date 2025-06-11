@@ -10,6 +10,7 @@ use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CatalogController;
 use App\Models\User;
+use App\Http\Controllers\CartController;
 
 
 Route::get('/', function () {
@@ -19,6 +20,7 @@ Route::get('/', function () {
 /* Route::get('/dashboard', function () { //Redireciona para a dashboard
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard'); //Só users verificados é que são encaminhados  */
+
 
 Auth::routes(['verify' => true]); // Verificações de email;
 
@@ -53,6 +55,10 @@ Route::view('dashboard', 'dashboard')->name('dashboard');
 
 //Catalog/Products Routes
 Route::resource('products', ProductController::class);
+Route::get('products/showcase', [ProductController::class, 'showCase'])->name('products.showcase');
+
+
+Route::resource('orders', OrderController::class);
 
 //Cart Routes
 //Show the Cart
