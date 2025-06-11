@@ -9,6 +9,7 @@ use App\Http\Controllers\FundsController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\CartController;
 
 
 Route::get('/', function () {

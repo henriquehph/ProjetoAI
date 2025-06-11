@@ -8,8 +8,8 @@
                 <div class="mt-auto pt-2 flex justify-between items-center">
                     <form method="POST" action="{{ route('cart.add', ['product' => $product]) }}" class="flex items-center gap-4">
                         @csrf
-                        <input type="number" name="quantity" value="1" min="1" class="w-20 px-2 py-1 border dark:border-gray-700 rounded-md text-center"/>
-                        <button variant="primary" type="submit" class="border dark:border-gray-700 rounded-md px-4 py-2 shadow p-4">Add to Cart</button>
+                        <input type="number" name="quantity" value="1" min="1" class="w-20 px-2 py-1 border dark:border-gray-700 rounded-md text-center text-gray-700"/>
+                        <button variant="primary" type="submit" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md transition duration-200">Add to Cart</button>
                     </form>
                 </div>
                 <div class="mt-auto pt-2 flex justify-between items-center">

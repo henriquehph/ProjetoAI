@@ -23,6 +23,11 @@
                         <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.index')">
                             {{ __('Catalog') }}
                         </x-nav-link>
+
+                        <x-nav-link :href="route('cart.show')" :active="request()->routeIs('cart.show')"
+                            badge="{{ session('cart') && session('cart')->count() > 0 ? session('cart')->count(): '' }}">
+                            {{ __('Cart') }}
+                        </x-nav-link>
                     </div>
                 </div>
 
@@ -82,6 +87,11 @@
 
                 <x-responsive-nav-link :href="route('products.index')" :active="request()->routeIs('products.index')">
                     {{ __('Catalog') }}
+                </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('cart.show')" :active="request()->routeIs('cart.show')"
+                    badge="{{ session('cart') && session('cart')->count() > 0 ? session('cart')->count(): '' }}">
+                    {{ __('Cart') }}
                 </x-responsive-nav-link>
             </div>
 
