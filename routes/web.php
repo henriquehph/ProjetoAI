@@ -9,15 +9,19 @@ use App\Http\Controllers\FundsController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+
 Route::get('/dashboard', function () { //Redireciona para a dashboard
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard'); //Só users verificados é que são encaminhados
+
 
 Auth::routes(['verify' => true]); // Verificações de email;
 
@@ -29,7 +33,9 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
 });
+
 
 //Route::get('user/create', [UserController::class, 'create'])->name('user.create');
 //Route::post('user', [UserController::class, 'store'])->name('user.store');
@@ -39,12 +45,17 @@ Route::middleware('auth')->group(function () {
 //Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 //Route::get('users/{user}', [UserController::class, 'show'])->name('users.show');
 
-Route::resource('users', UserController::class);
+Route::resource('users', UserController::class);//começar este
 
 //Catalog/Products Routes
 Route::resource('products', ProductController::class);
+Route::get('products/showcase', [ProductController::class, 'showCase'])->name('products.showcase');
 
-//Cart Routes
+
+Route::resource('orders', OrderController::class);
+
+//Cart Routes 
+// //depois este
     //Show the Cart
     Route::get('cart', [CartController::class, 'show'])->name('cart.show');
     // Add a product to the cart:
