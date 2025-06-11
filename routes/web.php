@@ -9,15 +9,16 @@ use App\Http\Controllers\FundsController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CatalogController;
+use App\Models\User;
 
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () { //Redireciona para a dashboard
+/* Route::get('/dashboard', function () { //Redireciona para a dashboard
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard'); //Só users verificados é que são encaminhados
+})->middleware(['auth', 'verified'])->name('dashboard'); //Só users verificados é que são encaminhados  */
 
 Auth::routes(['verify' => true]); // Verificações de email;
 
@@ -29,7 +30,16 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    //Routes for Board Members
+    Route::middleware('can:admin')->group(function () {
+        Route::resource('users', UserController::class);
+
+    });
 });
+
+Route::view('dashboard', 'dashboard')->name('dashboard');
+
 
 //Route::get('user/create', [UserController::class, 'create'])->name('user.create');
 //Route::post('user', [UserController::class, 'store'])->name('user.store');
@@ -39,24 +49,24 @@ Route::middleware('auth')->group(function () {
 //Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 //Route::get('users/{user}', [UserController::class, 'show'])->name('users.show');
 
-Route::resource('users', UserController::class);
+//Route::resource('users', UserController::class);
 
 //Catalog/Products Routes
 Route::resource('products', ProductController::class);
 
 //Cart Routes
-    //Show the Cart
-    Route::get('cart', [CartController::class, 'show'])->name('cart.show');
-    // Add a product to the cart:
-    Route::post('cart/{product}', [CartController::class, 'addToCart'])->name('cart.add');
-    // Remove a product from the cart:
-    Route::delete('cart/{product}', [CartController::class, 'removeFromCart'])->name('cart.remove');
-    // Confirm (store) the cart and save products registration on the database:
-    Route::post('cart', [CartController::class, 'confirm'])->name('cart.confirm');
-    // Clear the cart:
-    Route::delete('cart', [CartController::class, 'destroy'])->name('cart.destroy');
+//Show the Cart
+Route::get('cart', [CartController::class, 'show'])->name('cart.show');
+// Add a product to the cart:
+Route::post('cart/{product}', [CartController::class, 'addToCart'])->name('cart.add');
+// Remove a product from the cart:
+Route::delete('cart/{product}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+// Confirm (store) the cart and save products registration on the database:
+Route::post('cart', [CartController::class, 'confirm'])->name('cart.confirm');
+// Clear the cart:
+Route::delete('cart', [CartController::class, 'destroy'])->name('cart.destroy');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 //Pagina para carregar catálogo
 //get pra listar os valeu

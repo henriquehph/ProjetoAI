@@ -6,26 +6,50 @@ use App\Models\User;
 
 class UserPolicy
 {
-    public function view(User $user, User $account)
+
+    public function before(?User $user): bool|null
     {
-        return $user->id == $account->id || $user->type == 'board';
+
+        if ($user?->type == 'board') {
+            return true;
+        }
+        // When "Before" returns null, other methods (eg. viewAny, view, etc...) will be
+        // used to check the user authorizaiton
+        return null;
     }
-     public function viewMemberInfo(User $user)
+    public function viewAny(User $user, User $account)
     {
-        return $user->type == 'member' || $user->type == 'board' || $user->type == 'pending';
+        return $user->type === 'board';
+    }
+  
+      public function view(User $user, User $account): bool
+    {
+        return $user->type === 'board' || $user->id == $account->id;
     }
 
-     public function viewEmployeeInfo(User $user)
+     public function create(User $user): bool
     {
-        return $user->type == 'employee' || $user->type == 'board';
+        return $user->type === 'board';
     }
-    public function update(User $user, User $account)
+
+    public function update(User $user, User $account): bool
     {
-        return ( ($user->id == $account->id) &&
-            ($user->age >= 18) ) || $user->type == 'board';
+        return $user->type === 'board';
     }
-    public function create(User $user)
+
+    public function delete(User $user, User $account): bool
     {
         return $user->type == 'board';
     }
+
+    public function viewMemberDetails(User $user): bool
+    {
+        return $user->type !== 'employee';
+    }
+
+    public function editProfileMemberDetails(User $user): bool
+    {
+        return $user->type !== 'employee';
+    }
+           
 }

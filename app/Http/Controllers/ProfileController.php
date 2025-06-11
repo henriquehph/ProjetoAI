@@ -60,6 +60,7 @@ class ProfileController extends Controller
             'default_delivery_address' => ['nullable', 'string', 'max:255'],
             'default_payment_type' => ['nullable', 'in:Visa,PayPal,MB WAY'],
             'photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10240'],
+            'photo_file' => 'nullable|image|max:2048',
         ]);
 
 
@@ -73,6 +74,11 @@ class ProfileController extends Controller
 
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
+        }
+
+        if ($request->hasFile('photo_file')) {
+            $path = $request->file('photo_file')->store('photos', 'public');
+            $user['photo'] = $path;
         }
 
         $user->save();

@@ -9,7 +9,12 @@ class UserFormRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+       if (strtolower($this->getMethod()) == 'post') {
+        
+            return $this->user()->can('create', \App\Models\User::class);
+        } else {
+            return $this->user()->can('update', $this->route('user'));
+        }
     }
     /**
     * Get the validation rules that apply to the request.
