@@ -13,9 +13,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use Livewire\Volt\Volt;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [ProductController::class, 'index']);
 
 
 Route::get('/dashboard', function () { //Redireciona para a dashboard
@@ -49,8 +47,6 @@ Route::resource('users', UserController::class);//começar este
 
 //Catalog/Products Routes
 Route::resource('products', ProductController::class);
-Route::get('products/showcase', [ProductController::class, 'showCase'])->name('products.showcase');
-
 
 Route::resource('orders', OrderController::class);
 
