@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use App\Models\Product;
@@ -13,11 +12,10 @@ use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
-  
     public function show(): View
     {
-         $cart = session('cart', null);
-         return view('cart.show', compact('cart'));
+        $cart = session('cart', null);
+        return view('cart.show', compact('cart'));
     }
 
     public function addToCart(Request $request, Product $product): RedirectResponse
@@ -31,7 +29,7 @@ class CartController extends Controller
             if ($cart->firstWhere('id', $product->id)) {
                 $alertType = 'warning';
                 $url = route('products.show', ['product' => $product]);
-                $htmlMessage = "Product <a href='$url'>
+                $htmlMessage = "Product <a href='$url'>#{$product->id}
                 <strong>\"{$product->name}\"</strong></a> was not added to the cart
                 because it is already included in the cart!";
                 return back()
@@ -43,7 +41,7 @@ class CartController extends Controller
         }
         $alertType = 'success';
         $url = route('products.show', ['product' => $product]);
-        $htmlMessage = "Product <a href='$url'>
+        $htmlMessage = "Product <a href='$url'>#{$product->id}
             <strong>\"{$product->name}\"</strong></a> was added to the cart.";
         return back()
             ->with('alert-msg', $htmlMessage)

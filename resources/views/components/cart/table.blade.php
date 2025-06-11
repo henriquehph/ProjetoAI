@@ -18,7 +18,7 @@
                 <td class="px-2 py-4 text-left"><img src="{{ $product->photoFullUrl }}" alt="{{ $product->name }}" style="width: 45px; height: 45px; border-radius: 8px;"></td>
                 <td class="px-2 py-4 text-left">{{ $product->name }}</td>
                 <td class="px-2 py-4 text-left">{{ $product->price }}€</td>
-                <td class="px-2 py-4 text-left">{{ $product->quantity }}TODO</td> <!-- TODO -->
+                <td class="px-2 py-4 text-left">{{$product->quantity }}TODO</td> <!-- TODO -->
                 <td class="px-2 py-4 text-right">{{ $product->subtotal }}TODO</td> <!-- TODO -->
                 @if($showRemoveFromCart)
                     <td class="pl-4">
@@ -26,7 +26,6 @@
                             @csrf
                             @method('DELETE')
                             <button type="submit">
-                                <flux:icon.minus-circle class="size-5 hover:text-red-600" />
                             </button>
                         </form>
                     </td>
@@ -37,13 +36,13 @@
         <!-- Linha de custos de envio -->
         <tr class="font-semibold">
             <td colspan="4" class="px-2 py-2 text-left">Shipping:</td>
-            <td class="px-2 py-2 text-left">{{ $product->price }}€ Falta implementar</td>
+            <td class="px-2 py-2 text-left">{{ $product->price }}€ TODO</td>
         </tr>
 
         <!-- Linha preco total -->
         <tr class="font-bold bg-gray-200 dark:bg-gray-700">
             <td colspan="4" class="px-2 py-2 text-left">Total:</td>
-            <td class="px-2 py-2 text-left">{{ $product->price }}€ Falta implementar</td>
+            <td class="px-2 py-2 text-left">{{ $product->price }}€ TODO</td>
         </tr>
         </tbody>
     </table>

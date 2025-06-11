@@ -15,7 +15,7 @@
 
     <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
         @csrf
-        @method('put') 
+        @method('put')
 
         <div>
             <x-input-label for="name" :value="__('Name')" />
@@ -64,8 +64,9 @@
 
         <div>
             <x-input-label for="Default Delivery address" :value="__('Defaut Delivery Address')" />
-            <x-text-input id="default_delivery_address" name="default_delivery_address" type="text" class="mt-1 block w-full" :value="old('default_delivery_address', $user->default_delivery_address)"
-                 autofocus autocomplete="name" />
+            <x-text-input id="default_delivery_address" name="default_delivery_address" type="text"
+                class="mt-1 block w-full" :value="old('default_delivery_address', $user->default_delivery_address)"
+                autofocus autocomplete="name" />
             <x-input-error class="mt-2" :messages="$errors->get('default_delivery_address')" />
         </div>
 
@@ -89,22 +90,14 @@
             <x-input-error class="mt-2" :messages="$errors->get('default_payment_type')" />
         </div>
 
-        <div class="mt-4">
-            <x-input-label for="photo" :value="__('Profile Photo')" />
-            <input id="photo" class="block mt-1 w-full" type="file" name="photo" accept="image/*" />
-            <x-input-error :messages="$errors->get('photo')" class="mt-2" />
+        <div>
+            @include('profile.partials.photo', ['user' => $user, 'readonly' => $readonly])
         </div>
 
         <div class="flex items-center gap-4">
-        <x-hyperlink-text-button
-                    href="{{ route('profile.update') }}"
-                    text="Save"
-                    type="success"/>
+            <x-submit-button text="Save" type="success" />
 
-            <x-hyperlink-text-button
-                    href="{{ route('profile.show') }}"
-                    text="Cancel"
-                    type="primary"/>
+            <x-hyperlink-text-button href="{{ route('profile.show') }}" text="Cancel" type="primary" />
         </div>
     </form>
 </section>

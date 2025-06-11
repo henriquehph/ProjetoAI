@@ -10,9 +10,17 @@ use App\Http\Requests\UserFormRequest;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class UserController extends Controller
 {
+
+    use AuthorizesRequests;
+    public function __construct()
+    {
+        $this->authorizeResource(User::class);
+    } 
+
     public function index(Request $request): View
     {
 
@@ -76,6 +84,8 @@ class UserController extends Controller
         // Handle photo upload if file is present
         if ($request->hasFile('photo_file')) {
             $path = $request->file('photo_file')->store('photos', 'public');
+
+            dd($path); // debug
             $data['photo'] = $path; // save relative path in 'photo' field
         }
 
@@ -87,6 +97,7 @@ class UserController extends Controller
 
     public function edit(User $user): View
     {
+
         if (!$user) {
             abort(404);  // Or redirect with a custom message
         }
@@ -102,6 +113,8 @@ class UserController extends Controller
 
     public function update(UserFormRequest $request, User $user): RedirectResponse
     {
+        
+
         $data = $request->validated();
 
         if ($request->hasFile('photo_file')) {

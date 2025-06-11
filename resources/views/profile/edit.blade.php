@@ -1,3 +1,7 @@
+@php
+    $readonly = false; // or false, depending on your use case
+@endphp
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -10,7 +14,7 @@
             <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                 <div class="max-w-xl">
 
-                    @if($user->type == 'member' || $user->type == 'board' || $user->type == 'pending_member')
+                    @can('editProfileMemberDetails', $user)
 
                                 @include('profile.partials.membership_info', ['user' => $user]) <!-- HTML da membership -->
 
@@ -23,7 +27,7 @@
 
                         <br>
 
-                    @endif
+                    @endcan
 
             <!-- Update Password Form -->
             <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
@@ -32,7 +36,7 @@
                 </div>
             </div>
 
-            @if($user->type == 'member' || $user->type == 'board' || $user->type == 'pending_member')
+           @can
 
                 <!-- Delete User Form -->
                 <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
@@ -40,7 +44,7 @@
                         @include('profile.partials.delete-user-form')
                     </div>
                 </div>
-            @endif
+            @endcan
         </div>
     </div>
 </x-app-layout>
