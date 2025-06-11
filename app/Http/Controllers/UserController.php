@@ -9,39 +9,46 @@ use App\FuncoesAux\funcoesMap;
 use App\Http\Requests\UserFormRequest;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
     public function index(Request $request): View
     {
 
-    $users = User::query();
+        $users = User::query();
 
-    if ($request->filled('name')) {
-        $users->where('name', 'like', '%' . $request->name . '%');
-    }
+        if ($request->filled('name')) {
+            $users->where('name', 'like', '%' . $request->name . '%');
+        }
 
-    if ($request->filled('nif')) {
-        $users->where('nif', 'like', '%' . $request->nif . '%');
-    }
+        if ($request->filled('nif')) {
+            $users->where('nif', 'like', '%' . $request->nif . '%');
+        }
 
-    if ($request->filled('blocked')) {
-        $users->where('blocked', 'like', '%' . $request->blocked . '%');
-    }
+        if ($request->filled('blocked')) {
+            $users->where('blocked', 'like', '%' . $request->blocked . '%');
+        }
 
-     if ($request->filled('gender')) {
-        $users->where('gender', 'like', '%' . $request->gender . '%');
-    }
-
-    
-     if ($request->filled('default_payment_type')) {
-        $users->where('default_payment_type', 'like', '%' . $request->default_payment_type . '%');
-    }
+        if ($request->filled('gender')) {
+            $users->where('gender', 'like', '%' . $request->gender . '%');
+        }
 
 
-    $users = $users->paginate(20)->withQueryString(); // preserve filters in pagination
+        if ($request->filled('default_payment_type')) {
+            $users->where('default_payment_type', 'like', '%' . $request->default_payment_type . '%');
+        }
 
-    return view('users.index', compact('users'));
+
+        if ($request->filled('type')) {
+            $users->where('type', 'like', '%' . $request->type . '%');
+        }
+
+
+
+        $users = $users->paginate(20)->withQueryString(); // preserve filters in pagination
+
+        return view('users.index', compact('users'));
 
         //$allUsers = User::paginate(20);
 
@@ -54,7 +61,7 @@ class UserController extends Controller
 
     public function create(): View
     {
-        $user =  new \App\Models\User(); // empty user object
+        $user = new \App\Models\User(); // empty user object
         return view('users.create')->with('user', $user);
     }
 
@@ -63,8 +70,19 @@ class UserController extends Controller
         /* User::create($request->all());
         return redirect()->route('users.index'); */
         //dd($request->all()); // debug
-        User::create($request->validated());
+
+        $data = $request->validated();
+
+        // Handle photo upload if file is present
+        if ($request->hasFile('photo_file')) {
+            $path = $request->file('photo_file')->store('photos', 'public');
+            $data['photo'] = $path; // save relative path in 'photo' field
+        }
+
+        User::create($data);
+
         return redirect()->route('users.index');
+
     }
 
     public function edit(User $user): View
@@ -84,7 +102,28 @@ class UserController extends Controller
 
     public function update(UserFormRequest $request, User $user): RedirectResponse
     {
-        $user->update($request->validated());
+        $data = $request->validated();
+
+        if ($request->hasFile('photo_file')) {
+            // Delete old photo if exists
+            if ($user->photo) {
+                Storage::disk('public')->delete($user->photo);
+            }
+
+            // Store new photo
+            $path = $request->file('photo_file')->store('photos', 'public');
+            $data['photo'] = $path;
+        }
+
+        if ($request->input('delete_photo') == '1') {
+            if ($user->photo) {
+                Storage::disk('public')->delete($user->photo);
+            }
+            $data['photo'] = null;
+        }
+
+        $user->update($data);
+
         return redirect()->route('users.index');
     }
 
@@ -94,14 +133,14 @@ class UserController extends Controller
     {
         //Obter timestamp atual
         $now = Carbon::now();
-    
+
         //Página atual
         $page = request()->get('page', 1);
         //dd($page); //debug
 
         //Verificar que o user não se está a eliminar a ele mesmo
         $current_user = Auth::user();
-        if($current_user->id === $user->id) {
+        if ($current_user->id === $user->id) {
             return redirect()->route('users.index', ['page' => $page])->with('error', 'You cannot delete your own account.');
         }
         $user->deleted_at = $now;

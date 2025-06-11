@@ -16,9 +16,9 @@
                         </p>
                     </header>
 
-                    <form method="POST" action="{{ route('users.store')}}">
+                    <form method="POST" action="{{ route('users.store')}}" enctype="multipart/form-data">
                         @csrf
-                       
+
                         <div class="mt-6 space-y-4">
                             @include('users.partials.user_fields', ['mode' => 'create'])
                         </div>
@@ -33,13 +33,13 @@
                         <br>
 
                         <div class="flex items-center gap-4">
-                            
+
                             <x-submit-button text="Save" type="success" />
-                            <x-hyperlink-text-button href="{{ route('users.index') }}" text="Cancel" type="primary" /> 
-                
+                            <x-hyperlink-text-button href="{{ route('users.index') }}" text="Cancel" type="primary" />
+
                         </div>
 
-                        
+
                     </form>
 
                 </section>

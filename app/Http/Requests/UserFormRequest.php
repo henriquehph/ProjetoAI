@@ -38,6 +38,7 @@ class UserFormRequest extends FormRequest
             'photo' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:10240'],
             'type' => ['required', 'in:pending_member,board,member,employee'],
             'blocked' => ['required', 'in:0,1'],
+            'photo_file' => 'nullable|image|max:2048',
         ];
     }
     public function messages(): array
