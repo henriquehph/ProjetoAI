@@ -26,9 +26,6 @@
                                         :discount="old('discount', $filterByDiscount)"
                                         class="mb-6"
                                     />
-                                    <div class="flex items-center gap-4 mb-4">
-                                        <button variant="primary" href="{{ route('products.create') }}">Create a new product</button>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -36,10 +33,6 @@
                             <x-products.grid
                                 :products="$products"
                                 :showView="true"
-                                :showEdit="true"
-                                :showDelete="true"
-                                :showAddToCart="true"
-                                :showRemoveFromCart="false"
                             />
                         </div>
 
