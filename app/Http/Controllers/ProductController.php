@@ -56,7 +56,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $newProduct = new Product();
+        return view('products.create')->with('product', $newProduct);
     }
 
     /**
@@ -64,15 +65,26 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $newProduct = Product::create($request->validated());
+        $url = route('products.show', ['product' => $newProduct]);
+        $htmlMessage = "Product <a href='$url'><strong>{$newProduct->abbreviation}</strong>
+                    - '{$newProduct->name}'</a> has been created successfully!";
+        return redirect()->route('product.index')
+            ->with('alert-type', 'success')
+            ->with('alert-msg', $htmlMessage);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function showCase(Product $product)
     {
-        //
+        return view('products.showcase');
+    }
+
+        public function show(Product $product)
+    {
+        return view('products.show')->with('product', $product);
     }
 
     /**
@@ -80,7 +92,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return view('products.edit')->with('product', $product);
     }
 
     /**
@@ -88,7 +100,13 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $product->update($request->validated());
+        $url = route('products.show', ['product' => $product]);
+        $htmlMessage = "Product <a href='$url'><strong>{$product->abbreviation}</strong> -
+                    '{$product->name}'</a> has been updated successfully!";
+        return redirect()->route('products.index')
+            ->with('alert-type', 'success')
+            ->with('alert-msg', $htmlMessage);
     }
 
     /**
