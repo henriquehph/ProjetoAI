@@ -7,7 +7,7 @@
 
     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
         <div class="flex justify-center ">
-            @empty($cart)
+            @if($cart->isEmpty())
                 <div class="my-8 p-12">
                     <h2 class="text-2xl font-bold text-gray-700 dark:text-gray-300">Your cart is empty</h2>
                 </div>
@@ -20,7 +20,7 @@
                                 <h3 class="mb-4 text-xl text-gray-700 dark:text-gray-300">Shopping Cart List</h3>
                             </div>
                             <div class="my-8 font-base text-sm text-gray-700 dark:text-gray-300">
-                                <x-cart.table :products="$cart" :showRemoveFromCart="true" />
+                                <x-cart.table :products="$cart" :total="$total" :shipping='$shipping'/>
                             </div>
                         </div>
                         <!-- Container Direita -->
@@ -48,11 +48,11 @@
                                 <div class="p-4 text-gray-700 dark:text-gray-300">
                                     <div class="flex justify-between mb-2">
                                         <span>Shipping:</span>
-                                        <span>TODO€</span>
+                                        <span>{{ number_format($shipping, 2) }}€</span>
                                     </div>
                                     <div class="flex justify-between font-semibold text-lg border-t border-gray-300 pt-2">
                                         <span>Total:</span>
-                                        <span>TODO€</span>
+                                        <span>{{ number_format($total, 2) }}€</span>
                                     </div>
                                 </div>
                                 <div class="flex space-x-4 justify-center">

@@ -7,42 +7,79 @@ use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use App\Models\Product;
 use App\Models\User;
+use App\Models\Settings_shipping_costs;
 use App\Http\Requests\CartConfirmationFormRequest;
 use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
-    public function show(): View
+    public function show()
     {
-        $cart = session('cart', null);
-        return view('cart.show', compact('cart'));
+        $cart = session('cart', collect());
+
+        $cartItems = $cart->map(function ($item) {
+            $product = Product::find($item['product_id']);
+
+            if (!$product) {
+            return null;
+            }
+
+            return [
+                'product' => $product,
+                'quantity' => $item['quantity'],
+                'subtotal' => $product->price * $item['quantity'],
+            ];
+        });
+
+        $subtotalCart = $cartItems->sum('subtotal');
+
+        $shipping_cost = Settings_shipping_costs::where('min_value_threshold', '<=', $subtotalCart)
+            ->where('max_value_threshold', '>', $subtotalCart)
+            ->value('shipping_cost');
+
+        if ($shipping_cost === null) {
+            $shipping_cost = 0;
+        }
+
+        $total = $subtotalCart + $shipping_cost;
+
+        return view('cart.show', ['cart' => $cartItems,'total' => $total, 'shipping'=>$shipping_cost]);
     }
 
     public function addToCart(Request $request, Product $product): RedirectResponse
     {
-        $cart = session('cart', null);
-        if (!$cart) {
-            $cart = collect([$product]);
-            $request->session()->put('cart', $cart);
+        $quantity = max((int) $request->input('quantity', 1), 1);
+
+        // Recuperar carrinho da sessão, ou criar novo
+        $cart = session('cart', collect());
+
+        // Verifica se o produto já está no carrinho
+        $existingItem = $cart->firstWhere('product_id', $product->id);
+
+        if ($existingItem) {
+            // Atualizar quantidade se já existir
+            $cart = $cart->map(function ($item) use ($product, $quantity) {
+                if ($item['product_id'] === $product->id) {
+                    $item['quantity'] += $quantity;
+                }
+                return $item;
+            });
+        } else {
+            // Adiciona novo item ao carrinho
+            $cart->push([
+                'product_id' => $product->id,
+                'quantity' => $quantity
+            ]);
         }
-        else {
-            if ($cart->firstWhere('id', $product->id)) {
-                $alertType = 'warning';
-                $url = route('products.show', ['product' => $product]);
-                $htmlMessage = "Product <a href='$url'>#{$product->id}
-                <strong>\"{$product->name}\"</strong></a> was not added to the cart
-                because it is already included in the cart!";
-                return back()
-                    ->with('alert-msg', $htmlMessage)
-                    ->with('alert-type', $alertType);
-            } else {
-                $cart->push($product);
-            }
-        }
+
+        // Atualiza sessão
+        $request->session()->put('cart', $cart);
+
         $alertType = 'success';
         $url = route('products.show', ['product' => $product]);
         $htmlMessage = "Product <a href='$url'>#{$product->id}
-            <strong>\"{$product->name}\"</strong></a> was added to the cart.";
+            <strong>\"{$product->name}\"</strong></a> was added to the cart with quantity {$quantity}.";
+
         return back()
             ->with('alert-msg', $htmlMessage)
             ->with('alert-type', $alertType);
