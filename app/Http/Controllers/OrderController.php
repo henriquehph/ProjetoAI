@@ -4,19 +4,39 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request): View
     {
-         $orders = Order::paginate(20);
+        $status = $request->query('status', 'all');
+        $filterPrice = $request->query('price');
+        $filterDate = $request->query('date');
 
-        return view('orders.index', [
-            'orders' => $orders,
-        ]);
+        $ordersQuery = Order::query();
+
+        if ($status !== 'all') {
+            $ordersQuery->where('status', $status);
+        }
+
+        if ($filterDate === 'today') {
+            $ordersQuery->whereDate('created_at', now()->toDateString());
+        }
+
+        if ($filterDate === 'recent') {
+            $ordersQuery->orderBy('created_at', 'desc');
+        } elseif ($filterDate === 'oldest') {
+            $ordersQuery->orderBy('created_at', 'asc');
+        }
+
+        if ($filterPrice === 'asc' || $filterPrice === 'desc') {
+            $ordersQuery->orderBy('total', $filterPrice);
+        }
+
+        $orders = $ordersQuery->paginate(20)->withQueryString();
+
+        return view('orders.index', compact('orders', 'status', 'filterPrice', 'filterDate'));
     }
 
     /**
@@ -24,7 +44,7 @@ class OrderController extends Controller
      */
     public function create()
     {
-      
+
     }
 
     /**
@@ -40,7 +60,6 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
     }
 
     /**

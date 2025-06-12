@@ -24,13 +24,17 @@
                             {{ __('Catalog') }}
                         </x-nav-link>
 
+                        <x-nav-link :href="route('orders.index', ['status' => 'pending'])" :active="request('status') === 'pending'">
+                            {{ __('Orders') }}
+                        </x-nav-link>
+
                         <x-nav-link :href="route('cart.show')" :active="request()->routeIs('cart.show')"
-                            badge="{{ session('cart') && session('cart')->count() > 0 ? session('cart')->count(): '' }}">
-                            {{ __('Cart') }}
+                            badge="{{ collect(session('cart'))->sum('quantity') ?: '' }}">
+                                {{ __('Cart') }}
                         </x-nav-link>
                     </div>
                 </div>
-                
+
                     <nav class="flex items-center justify-end gap-4">
                         @guest
                             <a
@@ -47,7 +51,7 @@
                             </a>
                         @endauth
                     </nav>
-                
+
                 <!-- Settings Dropdown -->
                 @auth
                     <div class="hidden sm:flex sm:items-center sm:ms-6">

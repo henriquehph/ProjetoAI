@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CatalogController;
 use App\Models\User;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 
 
 Route::get('/', [ProductController::class, 'index']);
