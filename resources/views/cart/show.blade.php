@@ -52,7 +52,7 @@
                                     </div>
                                     <div class="flex justify-between font-semibold text-lg border-t border-gray-300 pt-2">
                                         <span>Total:</span>
-                                        <span>TODO€</span>
+                                        <span>Poo poo</span>
                                     </div>
                                 </div>
                                 <div class="flex space-x-4 justify-center">

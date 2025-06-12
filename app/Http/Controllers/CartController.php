@@ -20,6 +20,8 @@ class CartController extends Controller
 
     public function addToCart(Request $request, Product $product): RedirectResponse
     {
+        $quantity = $request->input('quantity',1);
+
         $cart = session('cart', null);
         if (!$cart) {
             $cart = collect([$product]);
@@ -39,6 +41,8 @@ class CartController extends Controller
                 $cart->push($product);
             }
         }
+
+
         $alertType = 'success';
         $url = route('products.show', ['product' => $product]);
         $htmlMessage = "Product <a href='$url'>#{$product->id}

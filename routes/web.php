@@ -72,7 +72,6 @@ require __DIR__ . '/auth.php';
 
 //Pagina para carregar catálogo
 //get pra listar os valeu
-Route::get('catalog', [ProductController::class, 'index'])->name('catalog');
 
 
 
