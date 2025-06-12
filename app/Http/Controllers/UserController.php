@@ -73,7 +73,7 @@ class UserController extends Controller
         return view('users.create')->with('user', $user);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(UserFormRequest $request): RedirectResponse
     {
         /* User::create($request->all());
         return redirect()->route('users.index'); */

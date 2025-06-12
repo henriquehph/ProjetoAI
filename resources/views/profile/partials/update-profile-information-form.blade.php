@@ -13,7 +13,7 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
         @csrf
         @method('put')
 
@@ -55,7 +55,7 @@
             <select id="gender" name="gender"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring focus:ring-indigo-200">
                 <option value="M" {{ old('gender', $user->gender) === 'M' ? 'selected' : '' }}>Male</option>
-                <option value="F" {{ old('gender', $user->genderr) === 'F' ? 'selected' : '' }}>Female</option>
+                <option value="F" {{ old('gender', $user->gender) === 'F' ? 'selected' : '' }}>Female</option>
                 <option value="O" {{ old('gender', $user->gender) === 'O' ? 'selected' : '' }}>Other</option>
             </select>
 
