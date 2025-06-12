@@ -24,7 +24,8 @@
                 <p class="text-lg text-gray-700 dark:text-gray-300 font-semibold">
                     UPGRADE:
                 </p>
-                <a href="{{ route('payments.pay') }}">
+                <a
+                    href="{{ route('transactions.create', ['type' => 'debit', 'debit_type' => 'membership_fee', 'value' => 100, 'from' => url()->current()]) }}">
                     <button type="button">Pay Membership Fee (€100)</button>
                 </a>
             </div>

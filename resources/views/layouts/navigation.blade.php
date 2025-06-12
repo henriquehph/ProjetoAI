@@ -32,6 +32,11 @@
                             badge="{{ collect(session('cart'))->sum('quantity') ?: '' }}">
                                 {{ __('Cart') }}
                         </x-nav-link>
+
+<x-nav-link :href="route('transactions.history', ['user' => auth()->id()])" :active="request()->routeIs('transactions.history')">
+    {{ __('Transaction History') }}
+</x-nav-link>
+                        
                     </div>
                 </div>
 

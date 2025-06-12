@@ -12,9 +12,10 @@ use App\Http\Controllers\CatalogController;
 use App\Models\User;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\TransactionController;
 
 
-Route::get('/', [ProductController::class, 'index']);
+Route::get('/', [ProductController::class, 'index'])->name('home'); // Rota para a página inicial, que lista os produtos
 
 /* Route::get('/dashboard', function () { //Redireciona para a dashboard
     return view('dashboard');
@@ -41,6 +42,8 @@ Route::middleware('auth')->group(function () {
 
 Route::view('dashboard', 'dashboard')->name('dashboard');
 
+//Route::middleware('auth')->get('/transactions/history/{user}', [TransactionController::class, 'history'])->name('transactions.history');
+Route::get('transactions/history/{user?}', [TransactionController::class, 'history'])->name('transactions.history');
 
 //Route::get('user/create', [UserController::class, 'create'])->name('user.create');
 //Route::post('user', [UserController::class, 'store'])->name('user.store');
@@ -73,8 +76,13 @@ require __DIR__ . '/auth.php';
 
 //Pagina para carregar catálogo
 //get pra listar os valeu
+Route::get('catalog', [ProductController::class, 'index'])->name('catalog');
 
 
+Route::middleware('auth')->group(function () {
+    Route::get('/transactions/create', [TransactionController::class, 'create'])->name('transactions.create');
+    Route::post('/transactions', [TransactionController::class, 'store'])->name('transactions.store');
+});
 
 //Página para carregar o cartão
 //Um get para mostrar o formulário de carregamento do cartão

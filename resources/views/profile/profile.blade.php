@@ -2,6 +2,16 @@
     $readonly = true; // or false, depending on your use case
 @endphp
 
+@if ($errors->any())
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+        <ul class="list-disc list-inside">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
 <x-app-layout>
     <section>
         <div class="py-12">
