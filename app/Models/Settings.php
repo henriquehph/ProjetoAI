@@ -14,4 +14,9 @@ class Settings extends Model
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'int';
+
+    public function getMembershipFeeAttribute($value)
+    {
+        return $value ?? 100; // 100 is the default membership fee
+    }
 }

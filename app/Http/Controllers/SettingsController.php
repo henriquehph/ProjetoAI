@@ -10,9 +10,14 @@ class SettingsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function show()
     {
-        //
+            $settings = Settings::first();
+            return view('dashboard', [
+                'settings'=> $settings,
+                'membership_fee' => $settings->membership_fee ?? 100, // Default membership fee
+                'shipping_costs' => $settings->shipping_costs,
+            ]);
     }
 
     /**

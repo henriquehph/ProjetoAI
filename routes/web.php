@@ -8,9 +8,11 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\FundsController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\CatalogController;
 use App\Models\User;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\SettingsController;
 
 
 Route::get('/', [ProductController::class, 'index']);
@@ -35,6 +37,11 @@ Route::middleware('auth')->group(function () {
     Route::middleware('can:admin')->group(function () {
         Route::resource('users', UserController::class);
 
+    });
+    //Routes for Admins
+    Route::middleware('can:admin')->group(function () {
+        Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+        Route::get('/dashboard', [SettingsController::class, 'show'])->name('dashboard');
     });
 });
 
