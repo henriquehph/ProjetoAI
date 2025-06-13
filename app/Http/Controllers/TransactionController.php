@@ -93,15 +93,12 @@ class TransactionController extends Controller
         return view('transactions.create', compact('value', 'debit_type'));
     }
 
-    public function history(User $user)
+    public function history(User $account)
     {
-        if (!$user->card) {
-            return redirect()->back()->with('error', 'This user does not have an associated card.');
-        }
+       
+        $transactions = $account->card->operations()->orderBy('date', 'desc')->get();
 
-        $transactions = $user->card->operations()->orderBy('date', 'desc')->get();
-
-        return view('transactions.history', compact('transactions', 'user'));
+        return view('transactions.history', compact('transactions', 'account'));
     }
 
 }

@@ -38,6 +38,10 @@ Route::middleware('auth')->group(function () {
         Route::resource('users', UserController::class);
 
     });
+
+    Route::get('transactions/history/{account}', [TransactionController::class, 'history'])
+        ->name('transactions.history')
+        ->middleware('can:view,account');
 });
 
 Route::view('dashboard', 'dashboard')->name('dashboard');
