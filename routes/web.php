@@ -45,21 +45,15 @@ Route::middleware('auth')->group(function () {
         ->middleware('can:view,account');
 
 
-
-
     Route::middleware(['can:viewAny,App\Models\User'])->group(function () {
         Route::get('/settings', [SettingController::class, 'show'])->name('settings.show');
         Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
-        
+        Route::view('dashboard', 'dashboard')->name('dashboard');
         Route::resource('categories', CategoryController::class);
 
     });
 });
 
-Route::view('dashboard', 'dashboard')->name('dashboard');
-
-//Route::middleware('auth')->get('/transactions/history/{user}', [TransactionController::class, 'history'])->name('transactions.history');
-Route::get('transactions/history/{user?}', [TransactionController::class, 'history'])->name('transactions.history');
 
 //Route::get('user/create', [UserController::class, 'create'])->name('user.create');
 //Route::post('user', [UserController::class, 'store'])->name('user.store');
