@@ -85,13 +85,13 @@ class UserController extends Controller
         if ($request->hasFile('photo_file')) {
             $path = $request->file('photo_file')->store('photos', 'public');
 
-            dd($path); // debug
+            //dd($path); // debug
             $data['photo'] = $path; // save relative path in 'photo' field
         }
 
         User::create($data);
 
-        return redirect()->route('users.index');
+        return redirect()->route('categories.index');
 
     }
 
@@ -99,7 +99,7 @@ class UserController extends Controller
     {
 
         if (!$user) {
-            abort(404);  // Or redirect with a custom message
+            abort(404); 
         }
         return view('users.edit', [
             'user' => $user,
@@ -153,9 +153,18 @@ class UserController extends Controller
 
         //Verificar que o user não se está a eliminar a ele mesmo
         $current_user = Auth::user();
+    
         if ($current_user->id === $user->id) {
             return redirect()->route('users.index', ['page' => $page])->with('error', 'You cannot delete your own account.');
         }
+
+        if($user->deleted_at){
+            // Se o user já está eliminado, restaurar
+            $user->deleted_at = null;
+            $user->save();
+            return redirect()->route('users.index', ['page' => $page])->with('success', 'User restored successfully.');
+        }
+
         $user->deleted_at = $now;
         $user->save();
         return redirect()->route('users.index', ['page' => $page]);

@@ -13,7 +13,8 @@ use App\Models\User;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TransactionController;
-
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\CategoryController;
 
 Route::get('/', [ProductController::class, 'index'])->name('home'); // Rota para a página inicial, que lista os produtos
 
@@ -42,6 +43,17 @@ Route::middleware('auth')->group(function () {
     Route::get('transactions/history/{account}', [TransactionController::class, 'history'])
         ->name('transactions.history')
         ->middleware('can:view,account');
+
+
+
+
+    Route::middleware(['can:viewAny,App\Models\User'])->group(function () {
+        Route::get('/settings', [SettingController::class, 'show'])->name('settings.show');
+        Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
+        
+        Route::resource('categories', CategoryController::class);
+
+    });
 });
 
 Route::view('dashboard', 'dashboard')->name('dashboard');
