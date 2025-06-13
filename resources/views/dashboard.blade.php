@@ -30,7 +30,7 @@
 
                 <div class="p-6 flex items-center justify-between text-gray-900 dark:text-gray-100">
                     <h1 class="text-lg font-medium">Manage Produtcs</h1>
-                    <x-hyperlink-text-button :href="route('categories.index')" text="Settings" type="success" />
+                    <x-hyperlink-text-button :href="route('products.index')" text="Settings" type="success" />
                 </div>
 
             </div>

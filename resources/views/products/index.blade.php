@@ -10,9 +10,18 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl">
+
+                    @can('create', App\Models\Product::class)
+                        <!-- Create Product Button -->
+                        <div class="flex items-center gap-4 mb-4">
+                            <x-hyperlink-text-button href="{{ route('products.create') }}" text="Create a new Product" type="success" />
+                        </div>
+
+                    @endcan
+
                         <div x-data="{ open: false }">
                             <div class="flex justify-end">
-                                <button variant="primary" @click="open = !open">Filters<button>
+                                <button variant="primary" @click="open = !open">Filters</button>
                             </div>
                             <div x-show="open" class="flex justify-start">
                                 <div class="my-4 p-6 w-full">
@@ -29,6 +38,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="my-4 font-base text-sm text-gray-700 dark:text-gray-300">
                             <x-products.grid
                                 :products="$products"

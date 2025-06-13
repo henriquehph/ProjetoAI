@@ -29,6 +29,17 @@ class ProductPolicy
         return true;
     }
 
+       public function viewDeletedItems(?User $user, Product $product): bool
+    {
+        if(!$product->deleted_at) {
+            return true;
+        }
+        if (!$user) {
+            return false;
+        }
+        return $user->type === 'board';
+    }
+
     /**
      * Determine whether the user can create models.
      */

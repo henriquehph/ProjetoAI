@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use App\Models\Category;
 
+use Illuminate\Support\Facades\Storage;
+
 class ProductController extends Controller
 {
 
@@ -46,8 +48,9 @@ class ProductController extends Controller
             ->paginate(20)
             ->withQueryString();
 
-        return view('products.index',
-            compact('products', 'filterByName', 'filterPrice', 'filterByCategories', 'filterByDiscount','categories')
+        return view(
+            'products.index',
+            compact('products', 'filterByName', 'filterPrice', 'filterByCategories', 'filterByDiscount', 'categories')
         );
     }
 
@@ -63,15 +66,33 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductFormRequest $request)
     {
-        $newProduct = Product::create($request->validated());
-        $url = route('products.show', ['product' => $newProduct]);
-        $htmlMessage = "Product <a href='$url'><strong>{$newProduct->abbreviation}</strong>
-                    - '{$newProduct->name}'</a> has been created successfully!";
-        return redirect()->route('product.index')
-            ->with('alert-type', 'success')
-            ->with('alert-msg', $htmlMessage);
+
+        $data = $request->validated();
+        //dd($request->all());
+        $category = Category::where('name', $request->input('category_name'))->first();
+
+        if (!$category) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['category_name' => 'The selected category does not exist.']);
+        }
+
+        // Set the category_id in data so it can be saved in the product
+        $data['category_id'] = $category->id;
+
+        // Handle photo upload if file is present
+        if ($request->hasFile('photo_file')) {
+            $path = $request->file('photo_file')->store('photos', 'public');
+
+            //dd($path); // debug
+            $data['photo'] = $path; // save relative path in 'photo' field
+        }
+
+        Product::create($data);
+
+        return redirect()->route('products.index');
     }
 
     /**
@@ -82,7 +103,7 @@ class ProductController extends Controller
         return view('products.showcase');
     }
 
-        public function show(Product $product)
+    public function show(Product $product)
     {
         return view('products.show')->with('product', $product);
     }
@@ -98,23 +119,66 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(ProductFormRequest $request, Product $product)
     {
-        $product->update($request->validated());
-        $url = route('products.show', ['product' => $product]);
-        $htmlMessage = "Product <a href='$url'><strong>{$product->abbreviation}</strong> -
-                    '{$product->name}'</a> has been updated successfully!";
-        return redirect()->route('products.index')
-            ->with('alert-type', 'success')
-            ->with('alert-msg', $htmlMessage);
+        $data = $request->validated();
+        //dd($request->all());
+        $category = Category::where('name', $request->input('category_name'))->first();
+
+        if (!$category) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors(['category_name' => 'The selected category does not exist.']);
+        }
+
+        // Set the category_id in data so it can be saved in the product
+        $data['category_id'] = $category->id;
+
+
+        if ($request->hasFile('photo_file')) {
+            // Delete old photo if exists
+            if ($product->photo) {
+                Storage::disk('public')->delete($product->photo);
+            }
+
+            // Store new photo
+            $path = $request->file('photo_file')->store('photos', 'public');
+            $data['photo'] = $path;
+        }
+
+        if ($request->input('delete_photo') == '1') {
+            if ($product->photo) {
+                Storage::disk('public')->delete($product->photo);
+            }
+            $data['photo'] = null;
+        }
+
+        //dd($data);
+        $product->update($data);
+
+        return redirect()->route('products.index');
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Product $product)
     {
-        //
+        if ($product->deleted_at) {
+            $product->deleted_at = null;
+            $product->save();
+            return redirect()->route('products.index')->with('success', 'Category restored successfully.');
+        }
+        if ($product->items_order()->count() == 0) {
+            $product->delete();
+            return redirect()->route('products.index')->with('success', 'Category deleted successfully.');
+        }
+
+        $product->deleted_at = now();
+        $product->save();
+
+        return redirect()->route('products.index')->with('error', 'Category cannot be fully deleted because it has associated products.');
     }
 
     // Emite um alerta caso o stock de algum produto chegar ao stock_lower_limit
@@ -122,8 +186,7 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
 
-        if ($product->isStockLow())
-        {
+        if ($product->isStockLow()) {
             $alertType = 'danger';
             $url = route('products.show', $product->id);
             $alertMsg = "Stock at lower limit <a href='$url'><u>Stock: {$product->stock}</u></a> Lower Limit: ({$product->stock_lower_limit})";
