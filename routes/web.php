@@ -107,8 +107,3 @@ Route::get('/add-funds', [FundsController::class, 'showAddFundsPage'])->middlewa
 //Post para processar o pagamento
 Route::post('/add-funds', [FundsController::class, 'addFunds'])->middleware('verified');
 
-// Mostrar a página de pagamento de membership
-Route::get('/membership/pay', [MembershipController::class, 'showPaymentForm'])->name('payments.pay');
-
-// Processar o pagamento de membership
-Route::post('/membership/pay', [MembershipController::class, 'processPayment'])->name('membership.process');
