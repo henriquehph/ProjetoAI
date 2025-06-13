@@ -1,22 +1,25 @@
-<x-layouts.main-content :title="$product->name"
-                        :heading="'Product '. $product->name">
+@extends('Layout')
+
+@section('header-title', $product->name)
+
+@section('main')
     <div class="flex flex-col space-y-6">
-        <div class="max-full">
-            <section>
-                <div class="mt-6 space-y-4">
-                    @include('products.partials.fields', ['mode' => 'show'])
-                </div>
-                <h3 class="pt-16 pb-4 text-lg font-medium text-gray-900
-                            dark:text-gray-100">
-                    list of products
-                </h3>
-                <x-disciplines.table :disciplines="$product->photo"
-                    :showProduct="false"
-                    :showView="true"
-                    :showEdit="false"
-                    :showDelete="false"
-                    />
-            </section>
+        <div class="p-4 sm:p-8 bg-white dark:bg-gray-900 shadow sm:rounded-lg">
+            <div class="max-full">
+                <section>
+                    <header>
+                        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                            Show Product "{{ $product->name }}"
+                        </h2>
+                    </header>
+
+                    @include('products.partials.product_fields', ['mode' => 'show'])
+
+                </section>
+            </div>
         </div>
     </div>
-</x-layouts.main-content>
+
+
+
+@endsection

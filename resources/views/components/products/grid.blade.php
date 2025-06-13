@@ -1,15 +1,25 @@
 <div>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         @foreach ($products as $product)
+            @cannot('viewDeletedItems', $product)
+            @continue
+            @endcannot
+
             <div class="flex flex-col items-center space-y-2">
 
-                {{-- Show icons only if the user can viewAdminList --}}
+                {{-- Icons para admins --}}
                 @can('viewAdminList', $product)
-                    <div class="flex justify-center space-x-2">
-                        <x-table.icon-show class="px-1" href="{{ route('products.show', ['product' => $product->id]) }}" />
-                        <x-table.icon-edit class="px-1" href="{{ route('products.edit', ['product' => $product->id]) }}" />
-                        <x-table.icon-delete class="px-1"
-                            action="{{ route('products.destroy', ['product' => $product->id]) }}" />
+                    <div class="flex flex-col items-center space-y-1">
+                        <div class="flex justify-center space-x-2">
+                            <x-table.icon-show class="px-1" href="{{ route('products.show', ['product' => $product->id]) }}" />
+                            <x-table.icon-edit class="px-1" href="{{ route('products.edit', ['product' => $product->id]) }}" />
+                            <x-table.icon-delete class="px-1"
+                                action="{{ route('products.destroy', ['product' => $product->id]) }}" />
+                        </div>
+
+                        <div class="text-sm text-gray-700">
+                            {{ $product->deleted_at ? 'Deleted' : 'Active' }}
+                        </div>
                     </div>
                 @endcan
 
@@ -39,6 +49,7 @@
                     </div>
                 </div>
             </div>
+
         @endforeach
     </div>
 </div>
