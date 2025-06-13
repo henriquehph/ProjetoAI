@@ -54,14 +54,14 @@
         <!-- Delivery Address -->
         <div class="mt-4">
             <x-input-label for="address" :value="__('Delivery Address')" />
-            <x-text-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address')"/>
+            <x-text-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address')" />
             <x-input-error :messages="$errors->get('address')" class="mt-2" />
         </div>
 
         <!-- NIF Number -->
         <div class="mt-4">
             <x-input-label for="nif" :value="__('NIF Number')" />
-            <x-text-input id="nif" class="block mt-1 w-full" type="text" name="nif" :value="old('nif')"/>
+            <x-text-input id="nif" class="block mt-1 w-full" type="text" name="nif" :value="old('nif')" />
             <x-input-error :messages="$errors->get('nif')" class="mt-2" />
         </div>
 
@@ -69,15 +69,14 @@
         <div class="mt-4">
             <x-input-label for="payment_details" :value="__('Payment Details')" />
             <x-text-input id="payment_details" class="block mt-1 w-full" type="text" name="payment_details"
-                :value="old('payment_details')"/>
+                :value="old('payment_details')" />
             <x-input-error :messages="$errors->get('payment_details')" class="mt-2" />
         </div>
 
         <!-- Profile Photo -->
         <div class="mt-4">
-            <x-input-label for="photo" :value="__('Profile Photo')" />
-            <input id="photo" class="block mt-1 w-full" type="file" name="photo" accept="image/*" />
-            <x-input-error :messages="$errors->get('photo')" class="mt-2" />
+            <x-photo-upload name="photo_file" label="Photo" width="md" :readonly="false" deleteTitle="Delete Photo"
+                :deleteAllow="true" :imageUrl="null" />
         </div>
 
         <!--Botões de submeter registo e "Already registered"-->
