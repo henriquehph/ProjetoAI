@@ -16,7 +16,7 @@ class ProductPolicy
         return $user->type === 'board';
     }
 
-     public function viewAdminList(User $user): bool
+    public function viewAdminList(User $user, Product $product = null): bool
     {
         return $user->type === 'board';
     }
