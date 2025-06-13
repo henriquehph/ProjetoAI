@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Operation extends Model
 {
     protected $fillable = [
-        'card_id_id',
+        'card_id',
         'type',
         'value',
         'date',

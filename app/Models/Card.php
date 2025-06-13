@@ -20,8 +20,14 @@ class Card extends Model
         'balance' => 'decimal:2',  // decimal com 2 casas decimais
     ];
 
-     public function card()
+    public function card()
     {
         return $this->hasOne(User::class, 'id');
     }
+
+    public function operations()
+    {
+        return $this->hasMany(Operation::class, 'card_id');
+    }
+
 }

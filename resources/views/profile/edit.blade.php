@@ -16,7 +16,10 @@
 
                     @can('editProfileMemberDetails', $user)
 
-                                @include('profile.partials.membership_info', ['user' => $user]) <!-- HTML da membership -->
+                                @include('profile.partials.membership_info', [
+                                    'user' => $user,
+                                    'membershipFee' => $membershipFee
+                                ])
 
                                 <br>
 

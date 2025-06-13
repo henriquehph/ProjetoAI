@@ -23,11 +23,14 @@ class ProfileController extends Controller
 
         $this->authorize('view', $user);
 
+        $membershipFee = \App\Models\Setting::first()->membership_fee;
+
         return view('profile.profile', [
             'user' => $user,
             'membership' => funcoesMap::mapMembershipType($user->type),
             'balance' => $user->card->balance ?? 0,
             'gender' => funcoesMap::mapGender($user->gender),
+            'membershipFee' => $membershipFee,
 
         ]);
     }
@@ -36,10 +39,13 @@ class ProfileController extends Controller
         $user = $request->user();
         $this->authorize('view', $user);
 
+        $membershipFee = \App\Models\Setting::first()->membership_fee;
+
         return view('profile.edit', [
             'user' => $user,
             'balance' => $user->card->balance ?? 0,
             'membership' => funcoesMap::mapMembershipType($user->type),
+            'membershipFee' => $membershipFee,
         ]);
     }
 

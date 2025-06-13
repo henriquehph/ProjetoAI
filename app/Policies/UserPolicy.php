@@ -20,7 +20,7 @@ class UserPolicy
         // used to check the user authorizaiton
         return null;
     }
-    public function viewAny(User $user, User $account)
+    public function viewAny(User $user)
     {
         return $user->type === 'board';
     }

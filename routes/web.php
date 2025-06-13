@@ -11,11 +11,11 @@ use App\Http\Controllers\UserController;
 use App\Models\User;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\SettingsController;
 
-
-Route::get('/', [ProductController::class, 'index']);
+Route::get('/', [ProductController::class, 'index'])->name('home'); // Rota para a página inicial, que lista os produtos
 
 /* Route::get('/dashboard', function () { //Redireciona para a dashboard
     return view('dashboard');
@@ -38,14 +38,25 @@ Route::middleware('auth')->group(function () {
         Route::resource('users', UserController::class);
 
     });
-    //Routes for Admins
-    Route::middleware('can:admin')->group(function () {
-        Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
-        Route::get('/dashboard', [SettingsController::class, 'show'])->name('dashboard');
+
+    //Regular user viewing their own history
+    Route::get('transactions/history', [TransactionController::class, 'myHistory'])
+        ->name('transactions.history');
+
+    //Admin (or authorized) viewing any user's history
+    Route::get('admin/transactions/history/{account}', [TransactionController::class, 'history'])
+        ->name('admin.transactions.history')
+        ->middleware('can:view,account');
+
+
+    Route::middleware(['can:viewAny,App\Models\User'])->group(function () {
+        Route::get('/settings', [SettingController::class, 'show'])->name('settings.show');
+        Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
+        Route::view('dashboard', 'dashboard')->name('dashboard');
+        Route::resource('categories', CategoryController::class);
+
     });
 });
-
-Route::view('dashboard', 'dashboard')->name('dashboard');
 
 
 //Route::get('user/create', [UserController::class, 'create'])->name('user.create');
@@ -79,8 +90,13 @@ require __DIR__ . '/auth.php';
 
 //Pagina para carregar catálogo
 //get pra listar os valeu
+Route::get('catalog', [ProductController::class, 'index'])->name('catalog');
 
 
+Route::middleware('auth')->group(function () {
+    Route::get('/transactions/create', [TransactionController::class, 'create'])->name('transactions.create');
+    Route::post('/transactions', [TransactionController::class, 'store'])->name('transactions.store');
+});
 
 //Página para carregar o cartão
 //Um get para mostrar o formulário de carregamento do cartão
@@ -90,8 +106,3 @@ Route::get('/add-funds', [FundsController::class, 'showAddFundsPage'])->middlewa
 //Post para processar o pagamento
 Route::post('/add-funds', [FundsController::class, 'addFunds'])->middleware('verified');
 
-// Mostrar a página de pagamento de membership
-Route::get('/membership/pay', [MembershipController::class, 'showPaymentForm'])->name('payments.pay');
-
-// Processar o pagamento de membership
-Route::post('/membership/pay', [MembershipController::class, 'processPayment'])->name('membership.process');

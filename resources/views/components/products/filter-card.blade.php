@@ -2,7 +2,6 @@
     <form method="GET" action="{{ $filterAction }}">
         <div class="flex flex-wrap justify-between gap-4 p-6 border dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800">
             <div class="flex flex-col gap-4 w-full md:w-2/3">
-
                 {{-- Categoria --}}
                 <div>
                     <label for="category" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Category</label>
