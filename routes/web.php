@@ -40,8 +40,13 @@ Route::middleware('auth')->group(function () {
 
     });
 
-    Route::get('transactions/history/{account}', [TransactionController::class, 'history'])
-        ->name('transactions.history')
+    //Regular user viewing their own history
+    Route::get('transactions/history', [TransactionController::class, 'myHistory'])
+        ->name('transactions.history');
+
+    //Admin (or authorized) viewing any user's history
+    Route::get('admin/transactions/history/{account}', [TransactionController::class, 'history'])
+        ->name('admin.transactions.history')
         ->middleware('can:view,account');
 
 

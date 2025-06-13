@@ -64,9 +64,11 @@
 
     </div>
 
-    <div class="mt-6">
-        <x-hyperlink-text-button :href="route('transactions.history', ['account' => $user->id])"
-            text="View Transaction History" type="primary" />
-    </div>
+    @if($mode == 'show')
+        <div class="mt-6">
+            <x-hyperlink-text-button :href="route('admin.transactions.history', ['account' => $user->id])"
+                text="View Transaction History" type="primary" />
+        </div>
+    @endif
 
 </div>

@@ -57,7 +57,7 @@ class CategoryController extends Controller
 
         Category::create($data);
 
-        return redirect()->route('users.index');
+        return redirect()->route('categories.index');
 
     }
 

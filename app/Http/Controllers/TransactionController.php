@@ -93,11 +93,26 @@ class TransactionController extends Controller
         return view('transactions.create', compact('value', 'debit_type'));
     }
 
+    public function myHistory()
+    {
+        $user = auth()->user();
+
+        // Reforço de permissoes
+        $this->authorize('view', $user);
+
+        $transactions = $user->card->operations()->orderBy('date', 'desc')->get();
+
+        return view('transactions.history', [
+            'transactions' => $transactions,
+        ]);
+    }
+
     public function history(User $account)
     {
-       
-        $transactions = $account->card->operations()->orderBy('date', 'desc')->get();
+        $this->authorize('view', $account);
 
+        $transactions = $account->card->operations()->orderBy('date', 'desc')->get();
+        //dd($transactions);
         return view('transactions.history', compact('transactions', 'account'));
     }
 
