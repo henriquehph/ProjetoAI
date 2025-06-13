@@ -54,6 +54,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
         Route::view('dashboard', 'dashboard')->name('dashboard');
         Route::resource('categories', CategoryController::class);
+        Route::resource('statistics', StatisticsController::class);
 
     });
 });

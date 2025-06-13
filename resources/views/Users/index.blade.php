@@ -7,7 +7,7 @@
 
 
 
-        <div class="my-4 p-6 bg-white dark:bg-gray-900 shadow-sm sm:rounded-lg text-gray-900 dark:text-gray-50">
+        <div class="my-4 p-6  dark:bg-gray-900 shadow-sm sm:rounded-lg text-gray-900 dark:text-gray-50">
 
             @if (session('error'))
                 <div class="alert alert-danger">
