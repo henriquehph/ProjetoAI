@@ -9,7 +9,7 @@ class UserPolicy
 
     public function before(?User $user): bool|null
     {
-        if ($user?->blocked == 1 || $user?->deleted_at != null || $user?->type == 'pending_member') {
+        if ($user?->blocked == 1 || $user?->deleted_at != null) {
             return false;
         }
 

@@ -24,10 +24,14 @@
                 <p class="text-lg text-gray-700 dark:text-gray-300 font-semibold">
                     UPGRADE:
                 </p>
-                <a
-                    href="{{ route('transactions.create', ['type' => 'debit', 'debit_type' => 'membership_fee', 'value' => 100, 'from' => url()->current()]) }}">
-                    <button type="button">Pay Membership Fee (€100)</button>
-                </a>
+                <x-hyperlink-text-button :href="route('transactions.create', [
+                'type' => 'debit',
+                'debit_type' => 'membership_fee',
+                'value' => $membershipFee,
+                'from' => url()->current()
+            ])" :text="'Pay Membership Fee (€' . $membershipFee . ')'" type="primary" />
+
+
             </div>
         </div>
     @endif

@@ -12,6 +12,7 @@
     </div>
 @endif
 
+
 <x-app-layout>
     <section>
         <div class="py-12">
@@ -19,15 +20,24 @@
                 <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                     <div>
 
+                        @if (session('error'))
+                            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                                {{ session('error') }}
+                            </div>
+                        @endif
+
                         <div class="max-w-xl">
                             @can('viewMemberDetails', $user)
 
-                                @include('profile.partials.membership_info', ['user' => $user])
+                                @include('profile.partials.membership_info', [
+                                    'user' => $user,
+                                    'membershipFee' => $membershipFee
+                                ])
 
                             @endcan
 
                             @include('profile.partials.user_info', ['user' => $user])
-                            <br>
+                    <br>
 
                             @can('viewMemberDetails', $user)
                                 @include('profile.partials.member_info', ['user' => $user])
