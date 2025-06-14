@@ -1,5 +1,5 @@
-<x-layouts.main-content :title="$product->name"
-                        :heading="'Product '. $product->name">
+<x-layouts.main-content :title="$order->id"
+                        :heading="'Order '. $order->id">
     <div class="flex flex-col space-y-6">
         <div class="max-full">
             <section>
@@ -10,12 +10,7 @@
                             dark:text-gray-100">
                     list of products
                 </h3>
-                <x-disciplines.table :disciplines="$product->photo"
-                    :showProduct="false"
-                    :showView="true"
-                    :showEdit="false"
-                    :showDelete="false"
-                    />
+                <@include('orders.partials.fields', ['mode' => 'show'])
             </section>
         </div>
     </div>

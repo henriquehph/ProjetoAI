@@ -15,6 +15,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\StatisticsController;
+use App\Http\Controllers\ShippingCostController;    
 
 Route::get('/', [ProductController::class, 'index'])->name('home'); // Rota para a página inicial, que lista os produtos
 
@@ -37,6 +38,7 @@ Route::middleware('auth')->group(function () {
     //Routes for Board Members
     Route::middleware('can:admin')->group(function () {
         Route::resource('users', UserController::class);
+        Route::resource('shipping-costs', ShippingCostController::class);
 
     });
 

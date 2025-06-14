@@ -21,7 +21,7 @@ class ProductFormRequest extends FormRequest
             'category_name' => [
                 'required',
                 'string',
-                
+
                 function ($attribute, $value, $fail) {
                     if (!Category::where('name', $value)->exists()) {
                         $fail("The selected category does not exist.");
@@ -33,10 +33,10 @@ class ProductFormRequest extends FormRequest
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'description' => 'required|string|max:1000',
-            
+
             'photo_file' => 'nullable|image|max:2048', // max 2MB
-            
-            'discount_min_qty' => 'nullable|integer|min:1',
+
+            'discount_min_qty' => 'nullable|integer|min:0',
             'discount' => 'nullable|numeric|min:0',
 
             'stock_lower_limit' => 'required|integer|min:0',

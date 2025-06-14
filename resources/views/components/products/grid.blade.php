@@ -7,29 +7,17 @@
 
             <div class="flex flex-col items-center space-y-2">
 
-                {{-- Icons para admins --}}
-                @can('viewAdminList', $product)
-                    <div class="flex flex-col items-center space-y-1">
-                        <div class="flex justify-center space-x-2">
-                            <x-table.icon-show class="px-1" href="{{ route('products.show', ['product' => $product->id]) }}" />
-                            <x-table.icon-edit class="px-1" href="{{ route('products.edit', ['product' => $product->id]) }}" />
-                            <x-table.icon-delete class="px-1"
-                                action="{{ route('products.destroy', ['product' => $product->id]) }}" />
-                        </div>
-
-                        <div class="text-sm text-gray-700">
-                            {{ $product->deleted_at ? 'Deleted' : 'Active' }}
-                        </div>
-                    </div>
-                @endcan
-
                 <!-- Product Card -->
-                <div
-                    class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg shadow p-4 flex flex-col w-full">
+                <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg shadow p-4 flex flex-col w-full {{ $product->stock <= 0 ? 'bg-orange-100 dark:bg-orange-900' : 'bg-white dark:bg-gray-800' }}">
                     <img src="{{ $product->photoFullUrl }}" alt="{{ $product->name }}"
                         class="w-full h-40 object-cover rounded-md" />
                     <h3 class="px-2 py-4 text-left">{{ $product->name }}</h3>
-                    <p class="px-2 py-4 text-left">{{ $product->price }}€</p>
+                    @php
+                        $finalPrice = $product->price - ($product->discount ?? 0);
+                        if ($finalPrice < 0) $finalPrice = 0;
+                    @endphp
+
+                    <p class="px-2 py-4 text-left">{{ number_format($finalPrice, 2) }}€</p>
 
                     <div class="mt-auto pt-2 flex justify-between items-center">
                         <form method="POST" action="{{ route('cart.add', ['product' => $product]) }}"
@@ -44,9 +32,32 @@
                         </form>
                     </div>
 
+                    @if ($product->stock <= 0)
+                        <p class="text-white font-semibold mb-2">
+                            Product out of stock delivery may take longer.
+                        </p>
+                    @endif
+
                     <div class="mt-auto pt-2 flex justify-between items-center">
                         <span class="px-2 py-4 text-left">Description: {{ $product->description }}</span>
                     </div>
+
+                    {{-- Icons para admins --}}
+                    @can('viewAdminList', $product)
+                        <div class="flex flex-col items-center space-y-1">
+                            <div class="flex justify-center space-x-2">
+                                <x-table.icon-show class="px-1" href="{{ route('products.show', ['product' => $product->id]) }}" />
+                                <x-table.icon-edit class="px-1" href="{{ route('products.edit', ['product' => $product->id]) }}" />
+                                <x-table.icon-delete class="px-1"
+                                    action="{{ route('products.destroy', ['product' => $product->id]) }}" />
+                            </div>
+
+                            <div class="text-sm text-gray-600">
+                                {{ $product->deleted_at ? 'Deleted' : 'Active' }}
+                            </div>
+                        </div>
+                    @endcan
+
                 </div>
             </div>
 

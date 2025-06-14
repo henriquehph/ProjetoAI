@@ -13,7 +13,7 @@
                         </h2>
                     </header>
 
-                    @include('products.partials.product_fields', ['mode' => 'show'])
+                    @include('products.partials.fields', ['mode' => 'show'])
 
                 </section>
             </div>

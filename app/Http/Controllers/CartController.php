@@ -51,7 +51,7 @@ class CartController extends Controller
     {
         $quantity = max((int) $request->input('quantity', 1), 1);
 
-        // Recuperar carrinho da sessão, ou criar novo
+        // Recuperar carrinho da sessão, ou criar um novo
         $cart = session('cart', collect());
 
         // Verifica se o produto já está no carrinho
@@ -101,7 +101,7 @@ class CartController extends Controller
                 ->with('alert-msg', $htmlMessage)
                 ->with('alert-type', $alertType);
         } else {
-            $element = $cart->firstWhere('id', $product->id);
+            $element = $cart->firstWhere('product_id', $product->id);
             if ($element) {
                 $cart->forget($cart->search($element));
                 if ($cart->count() == 0) {
@@ -136,71 +136,57 @@ class CartController extends Controller
 
     public function confirm(Request $request): RedirectResponse
     {
-
-        if(Auth()->guest()) {
-            return redirect('login')
-                ->with('alert-type', 'danger')
-                ->with('alert-msg', "You must be logged in to confirm the cart!");
-            }
-        $cart = session('cart', null);
-        if (!$cart || ($cart->count() == 0)) {
-            return back()
-                ->with('alert-type', 'danger')
-                ->with('alert-msg', "Cart was not confirmed, because cart is empty!");
-        } else {
-            $user = User::where('number', $request->validated()['user_number'])->first();
-            if (!$user) {
-                return back()
-                    ->with('alert-type', 'danger')
-                    ->with('alert-msg', "User number does not exist on the database!");
-            }
-            $insertProducts = [];
-            $productsOfUser = $user->products;
-            $ignored = 0;
-            foreach ($cart as $product) {
-                $exist = $productsOfUser->where('id', $product->id)->count();
-                if ($exist) {
-                    $ignored++;
-                } else {
-                    $insertProducts[$product->id] = [
-                        "product_id" => $product->id,
-                        "repeating" => 0,
-                        "grade" => null,
-                    ];
-                }
-            }
-            $ignoredStr = match ($ignored) {
-                0 => "",
-                1 => "<br>(1 product was ignored because user was already enrolled in it)",
-                default => "<br>($ignored products were ignored because user was already
-                            enrolled on them)"
-            };
-            $totalInserted = count($insertProducts);
-            $totalInsertedStr = match ($totalInserted) {
-                0 => "",
-                1 => "1 product registration was added to the user",
-                default => "$totalInserted products registrations were added to the user",
-            };
-            if ($totalInserted == 0) {
-                $request->session()->forget('cart');
-                return back()
-                    ->with('alert-type', 'danger')
-                    ->with('alert-msg', "No registration was added to the user!$ignoredStr");
-            } else {
-                DB::transaction(function () use ($user, $insertProducts) {
-                    $user->products()->attach($insertProducts);
-                });
-                $request->session()->forget('cart');
-                if ($ignored == 0) {
-                    return redirect()->route('users.show', ['user' => $user])
-                        ->with('alert-type', 'success')
-                        ->with('alert-msg', "$totalInsertedStr.");
-                } else {
-                    return redirect()->route('users.show', ['user' => $user])
-                        ->with('alert-type', 'warning')
-                        ->with('alert-msg', "$totalInsertedStr. $ignoredStr");
-                }
-            }
+        //Confirmar se utilizador está logado
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('alert-msg', 'Please log in to confirm your purchase.');
         }
+        //Confirmar se o carrinho tem produtos
+        $cart = session('cart', collect());
+
+        if ($cart->isEmpty()) {
+            return back()->with('alert-type', 'danger')->with('alert-msg', 'Your cart is empty.');
+        }
+        //Obter preco final da compra
+        $products = $cart->map(function ($item) {
+            $product = Product::find($item['product_id']);
+            if (!$product) return null;
+
+            // preço final pode considerar desconto aqui
+            $finalPrice = $product->price - ($product->discount ?? 0);
+            if ($finalPrice < 0) $finalPrice = 0;
+
+            return [
+                'product' => $product,
+                'quantity' => $item['quantity'],
+                'subtotal' => $finalPrice * $item['quantity'],
+                'unit_price' => $finalPrice,
+            ];
+        });
+        $memberId = auth()->id();
+        $nif = $request->input('nif');
+        $address = $request->input('delivery_address');
+
+        //Verificar saldo do cartão virtual
+        //Criar Order
+        $order = Order::create([
+            'member_id' => $memberId,
+            'status' => 'preparing',
+            'date' => now(),
+            'total_items' => $totalItems,
+            'shipping_cost' => $shippingCost,
+            'total' => $total,
+            'nif' => $nif,
+            'delivery_address' => $address,
+            'pdf_receipt' => null,
+            'cancel_reason' => null,
+        ]);
+        //Criar encomenda - OrderItems
+        //Retirar o valor ao utilizador
+        //Limpar carrinho
+        $request->session()->forget('cart');
+        return back()
+            ->with('alert-type', 'success')
+            ->with('alert-msg', 'Shopping Cart has been cleared');
+
     }
 }

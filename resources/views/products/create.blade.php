@@ -20,7 +20,7 @@
                         @csrf
 
                         <div class="mt-6 space-y-4">
-                            @include('products.partials.product_fields', ['mode' => 'create'])
+                            @include('products.partials.fields', ['mode' => 'create'])
                         </div>
 
                         <br>
