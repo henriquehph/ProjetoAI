@@ -5,7 +5,7 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ route('home') }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                     </a>
                 </div>
@@ -23,10 +23,12 @@
                         {{ __('Catalog') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('orders.index', ['status' => 'pending'])"
-                        :active="request('status') === 'pending'">
-                        {{ __('Orders') }}
-                    </x-nav-link>
+                    @can('viewAny', App\Models\Order::class)
+                        <x-nav-link :href="route('orders.index', request('status') ? ['status' => request('status')] : [])"
+                            :active="request()->routeIs('orders.index')">
+                            {{ __('Orders') }}
+                        </x-nav-link>
+                    @endcan
 
                     <x-nav-link :href="route('cart.show')" :active="request()->routeIs('cart.show')"
                         badge="{{ collect(session('cart'))->sum('quantity') ?: '' }}">
