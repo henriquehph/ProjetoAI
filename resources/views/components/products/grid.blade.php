@@ -7,22 +7,6 @@
 
             <div class="flex flex-col items-center space-y-2">
 
-                {{-- Icons para admins --}}
-                @can('viewAdminList', $product)
-                    <div class="flex flex-col items-center space-y-1">
-                        <div class="flex justify-center space-x-2">
-                            <x-table.icon-show class="px-1" href="{{ route('products.show', ['product' => $product->id]) }}" />
-                            <x-table.icon-edit class="px-1" href="{{ route('products.edit', ['product' => $product->id]) }}" />
-                            <x-table.icon-delete class="px-1"
-                                action="{{ route('products.destroy', ['product' => $product->id]) }}" />
-                        </div>
-
-                        <div class="text-sm text-gray-700">
-                            {{ $product->deleted_at ? 'Deleted' : 'Active' }}
-                        </div>
-                    </div>
-                @endcan
-
                 <!-- Product Card -->
                 <div
                     class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg shadow p-4 flex flex-col w-full">
@@ -47,6 +31,23 @@
                     <div class="mt-auto pt-2 flex justify-between items-center">
                         <span class="px-2 py-4 text-left">Description: {{ $product->description }}</span>
                     </div>
+
+                    {{-- Icons para admins --}}
+                    @can('viewAdminList', $product)
+                        <div class="flex flex-col items-center space-y-1">
+                            <div class="flex justify-center space-x-2">
+                                <x-table.icon-show class="px-1" href="{{ route('products.show', ['product' => $product->id]) }}" />
+                                <x-table.icon-edit class="px-1" href="{{ route('products.edit', ['product' => $product->id]) }}" />
+                                <x-table.icon-delete class="px-1"
+                                    action="{{ route('products.destroy', ['product' => $product->id]) }}" />
+                            </div>
+
+                            <div class="text-sm text-gray-600">
+                                {{ $product->deleted_at ? 'Deleted' : 'Active' }}
+                            </div>
+                        </div>
+                    @endcan
+
                 </div>
             </div>
 

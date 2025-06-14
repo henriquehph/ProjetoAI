@@ -23,7 +23,5 @@
         @if($deleteAllow && $imageUrl)
             <x-field.check-box name="delete_photo" :value="false" :label="$deleteTitle" width="md" :readonly="$readonly" />
         @endif
-    @else
-        <p class="text-gray-500 italic">Read-only mode</p>
     @endif
 </div>
