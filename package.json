@@ -18,6 +18,9 @@
         "vite": "^6.2.4"
     },
     "dependencies": {
-        "alpine": "^0.2.1"
+        "alpine": "^0.2.1",
+        "csv": "^6.3.11",
+        "csv.js": "^2.0.1",
+        "table2excel": "^1.0.4"
     }
 }

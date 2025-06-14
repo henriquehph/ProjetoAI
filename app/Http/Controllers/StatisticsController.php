@@ -48,16 +48,16 @@ class StatisticsController extends Controller
             ]);
         } else {
             return view('statistics.index', [ //else, give compared statistics
-             /*   'str1' => 'Most Expensive Orders',
-                'resp1' => Auth::user()->getMostExpensiveOrder($filter),
+                'str1' => 'Most Expensive Orders',
+                'resp1' => $userOrders = Order::getMostExpensiveOrders($filter, Auth::user()->id),
                 'str2' => 'Cheapest order',
-                'resp2' => Auth::user()->getCheapestOrder($filter),
+                'resp2' => Order::getCheapestOrders($filter, Auth::user()->id),
                 'str3' => 'Average money spent on order',
-                'resp3' => Auth::user()->getAverageMoneySpentOnOrder($filter) . ' €',
+                'resp3' => Order::getAverageMoneySpentOnOrder($filter, Auth::user()->id) . ' €',
                 'str4' => 'Average products per order',
-                'resp4' => Auth::user()->getAverageProductsPerOrder($filter) . ' items',
+                'resp4' => Order::getAverageProductsPerOrder($filter, Auth::user()->id) . ' items',
                 'filter' => 'Cum',
-                'judged' => Auth::user()->name, // to show the compared statistics*/
+                'judged' => Auth::user()->name, // to show the compared statistics
             ]);
         }
         

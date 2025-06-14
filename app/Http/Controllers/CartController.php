@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Settings_shipping_costs;
 use App\Http\Requests\CartConfirmationFormRequest;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class CartController extends Controller
 {
@@ -85,8 +86,8 @@ class CartController extends Controller
             ->with('alert-type', $alertType);
     }
 
-    
 
+    
     public function removeFromCart(Request $request, Product $product): RedirectResponse
     {
         $url = route('products.show', ['product' => $product]);
@@ -133,8 +134,14 @@ class CartController extends Controller
     }
 
 
-    public function confirm(CartConfirmationFormRequest $request): RedirectResponse
+    public function confirm(Request $request): RedirectResponse
     {
+
+        if(Auth()->guest()) {
+            return redirect('login')
+                ->with('alert-type', 'danger')
+                ->with('alert-msg', "You must be logged in to confirm the cart!");
+            }
         $cart = session('cart', null);
         if (!$cart || ($cart->count() == 0)) {
             return back()

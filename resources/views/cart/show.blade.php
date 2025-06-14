@@ -29,8 +29,7 @@
                                 <button variant="primary" type="submit"
                                     class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md transition duration-200">
                                     Update to Cart
-                               
-                            </form>
+                                </form>
                         </div>
                         <!-- Container Direita -->
                         <div class="w-2/3 p-4 border border-gray-300 rounded-md bg-gray-50 dark:bg-gray-800">
@@ -65,10 +64,12 @@
                                     </div>
                                 </div>
                                 <div class="flex space-x-4 justify-center">
-                                    <button type="submit"
-                                        class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md transition duration-200">
-                                        Confirm
-                                    </button>
+
+                                <div class="p-6 flex items-center justify-between text-gray-900 dark:text-gray-100">
+
+                                    <x-submit-button :href="route('cart.confirm')" method="POST" text="Purchase Cart" type="success" />
+
+            
                                     <form action="{{ route('cart.destroy') }}" method="post">
                                         @csrf
                                         @method('DELETE')
@@ -77,6 +78,8 @@
                                             Clear Cart
                                         </button>
                                     </form>
+                                </div>
+                                    
                                 </div>
                             </form>
                         </div>

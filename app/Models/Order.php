@@ -44,25 +44,27 @@ class Order extends Model
         return $this->hasMany(Order::class, 'user_id');
     }
 
-    public function getTotalOrdersAttribute($filter)
+    public function getTotalOrdersAttribute($filter, $userId)
     {
-        return $this->compareOrders($filter)->count();
+        return $this->compareOrders($filter)->where('id')->count();
     }
-    public function getMostExpensiveOrder($filter)
+
+    public function getMostExpensiveOrder($filter, $userId)
     {
-        return $this->compareOrders($filter)->orderBy('total', 'desc')->first();
+        return $this->compareOrders($filter)->where('id')->orderBy('total', 'desc')->first();
     }
-    public function getCheapestOrder($filter)
+    public function getCheapestOrder($filter, $userId)
     {
-        return $this->compareOrders($filter)->orderBy('total', 'asc')->first();
+        return $this->compareOrders($filter)->where('id')->orderBy('total', 'asc')->first();
     }
-    public function getAverageMoneySpentOnOrder($filter)
+    public function getAverageMoneySpentOnOrder($filter, $userId)
     {
-        return $this->compareOrders($filter)->average('total');
+        return $this->compareOrders($filter)->where('id')->average('total');
     }
+
     public function getAverageProductsPerOrder($filter)
     {
-        return $this->compareOrders($filter)->average('total_items');
+        return $this->compareOrders($filter)->where('id')->average('total_items');
     }
     public function compareOrders($filter)
     {

@@ -1,4 +1,4 @@
-
+@vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/table2excel.js'])
 <!--ADD
     User
     -average money spent per purchase
@@ -56,8 +56,9 @@
                     
                     
                     </div>
-
-                    <table class="table-auto top-padding mx-auto w-1/2 border-A border-white dark:border-gray-700">
+                    <script src="table2excel.js"></script>
+                    <script src="csv.min.js"></script>
+                    <table id="Info" class="table-auto top-padding mx-auto w-1/2 border-A border-white dark:border-gray-700">
 
                         <tbody>
                                 
@@ -80,25 +81,18 @@
                         </tbody>
                     </table>
                     <div class="flex justify-center pt-11 gap-4 mb-4 ">
-                        <x-dropdown align="right" width="48">
-                        <x-slot name="trigger">
-                            <button class="inline-flex items-center px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                                {{ __('Export') }}
-                            </button>
-                        </x-slot>
-                        <x-slot name="content">
-                            <x-dropdown-link :href="route('catalog', ['type' => 'csv'])">
-                                {{ __('Export as CSV') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link :href="route('catalog', ['type' => 'csv'])">
-                                {{ __('Export as Excel') }}
-                            </x-dropdown-link>
-                            <x-dropdown-link :href="route('catalog', ['type' => 'pdf'])">
-                                {{ __('Export as PDF') }}
-                            </x-dropdown-link>
-                        </x-slot>
-                    </x-dropdown>
+                    
+                        <button id="export-excel" class="inline-flex items-center px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                            {{ __('Export to Excel') }}
+                        </button>
                     </div>
+                    <script src="table2excel.js"></script>
+                    <script>
+                        document.getElementById("export-excel").addEventListener("click", function() {
+                            var table2excel = new Table2Excel();
+                            table2excel.export(document.querySelectorAll("#Info", ""));
+                        });
+                    </script>
                 </div>
             </div>
         </div>
