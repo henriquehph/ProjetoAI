@@ -87,6 +87,9 @@ class TransactionController extends Controller
             $user->type = 'member';
             $user->save();
         }
+        if ($request->debit_type === 'order') {
+            $request->session()->forget('cart');
+        }
 
         return redirect($redirectUrl)->with('success', 'Transaction created!');
     }
