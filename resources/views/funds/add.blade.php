@@ -11,9 +11,11 @@
 
     <p>Select a payment method:</p>
 
-    <ul>
-        <li><a href="{{ route('pay.visa.form') }}">Add Funds with Visa</a></li>
-        <li><a href="{{ route('pay.paypal.form') }}">Add Funds with PayPal</a></li>
-        <li><a href="{{ route('pay.mbway.form') }}">Add Funds with MBWay</a></li>
-    </ul>
+    <div class="flex gap-4">
+        <x-hyperlink-text-button text="Add Funds with Visa" :href="route('pay.visa.form')" type="primary" />
+
+        <x-hyperlink-text-button text="Add Funds with PayPal" :href="route('pay.paypal.form')" type="info" />
+
+        <x-hyperlink-text-button text="Add Funds with MBWay" :href="route('pay.mbway.form')" type="success" />
+    </div>
 @endsection

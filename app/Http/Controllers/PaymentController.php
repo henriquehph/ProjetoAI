@@ -12,6 +12,7 @@ class PaymentController extends Controller
         $request->validate([
             'card_number' => ['required', 'digits:16', 'not_regex:/^0/'],
             'cvc_code' => ['required', 'digits:3', 'not_regex:/^0/'],
+            
         ]);
 
         $card_number = $request->input('card_number');

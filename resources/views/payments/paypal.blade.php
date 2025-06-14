@@ -1,15 +1,17 @@
 @extends('layout')
 
-@section('title', 'Pay with Paypal')
+@section('header-title', 'Pay with Paypal')
 
-@section('content')
+@section('main')
 
 @php
     $formData = [
-        'action' => route('pay.paypal'),
+        'action' => route('funds.store'),
         'buttonText' => 'Pay with Paypal',
         'inputs' => [
             ['name' => 'email_address', 'type' => 'email', 'placeholder' => 'Email address'],
+            ['name' => 'payment_method', 'type' => 'hidden', 'value' => 'paypal'], 
+        
         ],
     ];
 @endphp

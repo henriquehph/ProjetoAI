@@ -9,14 +9,26 @@
 <form action="{{ $action }}" method="POST">
     @csrf
 
+    <label for="amount">Amount to add:</label>
+    <input
+        type="number"
+        name="amount"
+        id="amount"
+        min="1"
+        value="{{ old('amount') }}"
+        required
+    />
+
+    <br><br>
+
     @foreach ($inputs as $input)
-        <x-form-input
-            :name="$input['name']"
-            :type="$input['type'] ?? 'text'"
+        <x-form-input 
+            :name="$input['name']" 
+            :type="$input['type'] ?? 'text'" 
             :placeholder="$input['placeholder'] ?? ''"
-            :value="old($input['name'], $input['value'] ?? '')"
+            :value="old($input['name'], $input['value'] ?? '')" 
         />
     @endforeach
 
-    <button type="submit">{{ $buttonText }}</button>
+    <x-submit-button :text="$buttonText" type="primary" />
 </form>
