@@ -28,9 +28,6 @@
     <x-slot name="header">
         <div class="space-x-4">
             <!-- Pedidos pendentes this really needs a better option...-->
-            <x-nav-link :href="route('statistics.index', ['filter' => 'Week'])">
-                {{ __('Week') }}
-            </x-nav-link>
             <x-nav-link :href="route('statistics.index', ['filter' => 'Month'])" :active="request('status') === 'pending'">
                 {{ __('Month') }}
             </x-nav-link>

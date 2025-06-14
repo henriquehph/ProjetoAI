@@ -24,9 +24,7 @@
                         <div class="mt-6 space-y-4">
                             @include('settings.partials.membership_fee', ['mode' => 'edit'])
                         </div>
-
                         
-
                         <br>
 
                         <div class="flex items-center gap-4">

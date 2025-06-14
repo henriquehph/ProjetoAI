@@ -80,6 +80,8 @@ Route::resource('products', ProductController::class);
 
 Route::resource('orders', OrderController::class);
 
+Route::get('orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+
 //Cart Routes
 //Show the Cart
 Route::get('cart', [CartController::class, 'show'])->name('cart.show');

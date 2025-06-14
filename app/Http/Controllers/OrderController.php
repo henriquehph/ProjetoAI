@@ -70,7 +70,7 @@ class OrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Order $order)
+    public function cancel(Request $request, Order $order)
     {
         //
     }
@@ -78,16 +78,38 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Order $order)
+    public function update(Request $request)
     {
-        //
+
+        // Validate and update the order details
+        $orderId = $request->input('order_id'); // Assuming you get the order ID from the request
+        $order = Order::findOrFail($orderId);
+        $order->update($request->only('status', 'total'));
+
+        // Optionally, handle any additional logic such as sending notifications
+
+        return redirect()->route('orders.index')->with('success', 'Order updated successfully.');
     }
+
+    public function cancelOrder(Request $request, Order $orderId)
+    {
+        $orderId = $request->input('order_id'); // Assuming you get the order ID from the request
+        $order = Order::findOrFail($orderId);
+        $order->update(['status' => 'canceled']);
+
+        return redirect()->route('orders.index')->with('success', 'Order canceled successfully.');
+    }
+
+       
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Order $order)
+    public function destroy($id)
     {
-        //
+        $order = Order::findOrFail($id);
+        $order->delete();
+
+        return redirect()->route('orders.index')->with('success', 'Order deleted successfully.');
     }
 }
