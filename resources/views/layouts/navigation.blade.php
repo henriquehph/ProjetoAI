@@ -38,6 +38,10 @@
                             :active="request()->routeIs('transactions.history')">
                             {{ __('Transaction History') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('statistics.index', ['account' => auth()->id()])"
+                            :active="request()->routeIs('statistics.index')">
+                            {{ __('Statistics') }}
+                        </x-nav-link>
                     @endauth
                 </div>
             </div>

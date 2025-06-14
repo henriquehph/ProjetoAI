@@ -14,6 +14,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\StatisticsController;
 
 Route::get('/', [ProductController::class, 'index'])->name('home'); // Rota para a página inicial, que lista os produtos
 
