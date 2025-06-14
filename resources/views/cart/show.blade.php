@@ -16,12 +16,21 @@
                     <div class="flex flex-col lg:flex-row lg:space-x-12 space-y-8 lg:space-y-0 items-start">
                         <!-- Container Esquerda -->
                         <div class="w-2/3 p-4 border border-gray-300 rounded-md bg-gray-50 dark:bg-gray-800">
-                            <div>
-                                <h3 class="mb-4 text-xl text-gray-700 dark:text-gray-300">Shopping Cart List</h3>
-                            </div>
-                            <div class="my-8 font-base text-sm text-gray-700 dark:text-gray-300">
-                                <x-cart.table :products="$cart" :total="$total" :shipping='$shipping'/>
-                            </div>
+                            
+                                @csrf
+                                <div>
+                                    <h3 class="mb-4 text-xl text-gray-700 dark:text-gray-300">Shopping Cart List</h3>
+                                </div>
+                                    
+                                    <div class="my-8 font-base text-sm text-gray-700 dark:text-gray-300">
+                                        <x-cart.table :products="$cart" :total="$total" :shipping='$shipping'/>
+                                    </div>
+                            
+                                <button variant="primary" type="submit"
+                                    class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-md transition duration-200">
+                                    Update to Cart
+                               
+                            </form>
                         </div>
                         <!-- Container Direita -->
                         <div class="w-2/3 p-4 border border-gray-300 rounded-md bg-gray-50 dark:bg-gray-800">

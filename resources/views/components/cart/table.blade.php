@@ -16,7 +16,7 @@
                 <td class="px-2 py-4 text-left"><img src="{{ $item['product']->photoFullUrl }}" alt="{{ $item['product']->name }}" style="width: 45px; height: 45px; border-radius: 8px;"></td>
                 <td class="px-2 py-4 text-left">{{ $item['product']->name }}</td>
                 <td class="px-2 py-4 text-center">{{ $item['product']->price }}€</td>
-                <td class="px-2 py-4 text-center">{{ $item['quantity'] }}</td>
+                <td class="px-2 py-4 text-center"> <x-field.input class="w-24" name="" type="number" min="0" value="{{ old('Quantity of stock', $item['quantity']) }}" /></td>
                 <td class="px-2 py-4 text-right">{{ number_format($item['subtotal'], 2) }}€</td>
             </tr>
         @endforeach

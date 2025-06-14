@@ -85,6 +85,8 @@ class CartController extends Controller
             ->with('alert-type', $alertType);
     }
 
+    
+
     public function removeFromCart(Request $request, Product $product): RedirectResponse
     {
         $url = route('products.show', ['product' => $product]);

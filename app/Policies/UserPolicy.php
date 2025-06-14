@@ -47,12 +47,17 @@ class UserPolicy
 
     public function viewMemberDetails(User $user): bool
     {
-        return $user->type !== 'employee';
+        return $user->type != 'employee';
     }
 
     public function editProfileMemberDetails(User $user): bool
     {
         return $user->type !== 'employee';
+    }
+
+    public function canBuyCart(User $user): bool
+    {
+        return $user->type != Null ;
     }
 
 }

@@ -67,25 +67,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->photo ? asset('storage/' . $this->photo) : null;
     }
 
-    //STATISTICS god im stupid
-    public function getTotalOrdersAttribute()
-    {
-        return $this->orders()->count();
-    }
-    public function getMostExpensiveOrderAttribute()
-    {
-        return $this->orders()->orderBy('total', 'desc')->first();
-    }
-    public function getCheapestOrderAttribute()
-    {
-        return $this->orders()->orderBy('total', 'asc')->first();
-    }
-    public function getAverageMoneySpentOnOrderAttribute()
-    {
-        return $this->orders()->average('total');
-    }
-    public function getAverageProductsPerOrderAttribute()
-    {
-        return $this->orders()->average('total_items');
-    }
+    
+    
+    
 }

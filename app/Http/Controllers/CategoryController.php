@@ -22,7 +22,7 @@ class CategoryController extends Controller
         if ($request->filled('deleted_at') and $request->deleted_at == 1) {
             $categories->whereNotNull('deleted_at');
         } elseif ($request->filled('deleted_at') and $request->deleted_at == 0) {
-            $categories->whereNull('deleted_at');
+            $categories->order('deleted_at');
         }
 
         $categories = $categories->paginate(20)->withQueryString();
@@ -35,7 +35,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $category = new \App\Models\Category(); // empty category object
+        $category = new Category(); // empty category object
         return view('categories.create')->with('category', $category);
     }
 

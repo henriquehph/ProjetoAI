@@ -39,4 +39,39 @@ class Order extends Model
     {
         return $this->HasMany(User::class);
     }
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'user_id');
+    }
+
+    public function getTotalOrdersAttribute($filter)
+    {
+        return $this->compareOrders($filter)->count();
+    }
+    public function getMostExpensiveOrder($filter)
+    {
+        return $this->compareOrders($filter)->orderBy('total', 'desc')->first();
+    }
+    public function getCheapestOrder($filter)
+    {
+        return $this->compareOrders($filter)->orderBy('total', 'asc')->first();
+    }
+    public function getAverageMoneySpentOnOrder($filter)
+    {
+        return $this->compareOrders($filter)->average('total');
+    }
+    public function getAverageProductsPerOrder($filter)
+    {
+        return $this->compareOrders($filter)->average('total_items');
+    }
+    public function compareOrders($filter)
+    {
+        if ($filter == 'Month') {
+            return $this->orders()->whereMonth('created_at', now()->month);
+        } elseif ($filter == 'Year') {
+            return $this->orders()->whereYear('created_at', now()->year);
+        } else {
+            return $this->orders();
+        }
+    }
 }
