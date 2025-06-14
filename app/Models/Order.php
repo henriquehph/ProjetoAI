@@ -37,6 +37,6 @@ class Order extends Model
     //Relação com a tabela users
     public function user()
     {
-        return $this->HasMany(User::class);
+        return $this->belongsTo(User::class, 'member_id');
     }
 }

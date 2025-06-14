@@ -23,6 +23,14 @@
                         <option value="oldest" @if($date === 'oldest') selected @endif>Oldest</option>
                     </select>
                 </div>
+
+                {{-- Member Id --}}
+                <div>
+                    <label for="member_id" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Member Id</label>
+                    <input type="text" name="member_id" id="member_id" value="{{ old('member_id', $filterId ?? '') }}"
+                        class="w-full p-2 rounded-md border dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100"
+                        placeholder="Search by Member Id">
+                </div>
             </div>
             <div class="grow-0 flex flex-col space-y-3 justify-start">
                 <div class="pt-6">

@@ -13,6 +13,7 @@ class OrderController extends Controller
         $status = $request->query('status', 'all');
         $filterPrice = $request->query('price');
         $filterDate = $request->query('date');
+        $filterId = $request->query('member_id');
 
         $ordersQuery = Order::query();
 
@@ -34,9 +35,13 @@ class OrderController extends Controller
             $ordersQuery->orderBy('total', $filterPrice);
         }
 
+        if (!empty($filterId)) {
+            $ordersQuery->where('member_id', $filterId);
+        }
+
         $orders = $ordersQuery->paginate(20)->withQueryString();
 
-        return view('orders.index', compact('orders', 'status', 'filterPrice', 'filterDate'));
+        return view('orders.index', compact('orders', 'status', 'filterPrice', 'filterDate', 'filterId'));
     }
 
     /**

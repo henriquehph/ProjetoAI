@@ -20,7 +20,7 @@
                                 <h3 class="mb-4 text-xl text-gray-700 dark:text-gray-300">Shopping Cart List</h3>
                             </div>
                             <div class="my-8 font-base text-sm text-gray-700 dark:text-gray-300">
-                                <x-cart.table :products="$cart" :total="$total" :shipping='$shipping'/>
+                                <x-cart.table :products="$cart" :total="$total" :shipping="$shipping"/>
                             </div>
                         </div>
                         <!-- Container Direita -->
