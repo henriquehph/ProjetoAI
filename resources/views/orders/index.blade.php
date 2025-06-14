@@ -76,14 +76,14 @@
                     <p class="text-lg font-medium mb-4">Select an order ID to view details or perform actions.</p>
                 </div>
                 <div class="p-6 flex items-start justify-between ">
-                    <form method="post" action="{{ route('orders.cancelOrder', $order) }}">
                         @csrf
-                        @method('POST')
+                        @method('P')
                         <div class="flex items-center">
                             <x-text-input class="p-2"  label="Order ID" name="order_id" placeholder="Enter Order ID" />
-                            <x-submit-button class="p-2" text="Cancel Order" type="primary" />
+                            <x-submit-button class="p-6" text="Cancel Order" type="primary" />
+                            <x-submit-button class="p-6" text="Work on Order" type="primary" />
                         </div>
-                    </form>
+                    
                </div>
             </div>
         </div>

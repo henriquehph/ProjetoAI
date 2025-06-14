@@ -91,7 +91,7 @@ class OrderController extends Controller
         return redirect()->route('orders.index')->with('success', 'Order updated successfully.');
     }
 
-    public function cancelOrder(Request $request)
+    public function cancelOrder(Request $request, Order $orderId)
     {
         $orderId = $request->input('order_id'); // Assuming you get the order ID from the request
         $order = Order::findOrFail($orderId);
