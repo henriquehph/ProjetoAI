@@ -8,12 +8,16 @@
             <div class="flex flex-col items-center space-y-2">
 
                 <!-- Product Card -->
-                <div
-                    class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg shadow p-4 flex flex-col w-full">
+                <div class="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg shadow p-4 flex flex-col w-full {{ $product->stock <= 0 ? 'bg-orange-100 dark:bg-orange-900' : 'bg-white dark:bg-gray-800' }}">
                     <img src="{{ $product->photoFullUrl }}" alt="{{ $product->name }}"
                         class="w-full h-40 object-cover rounded-md" />
                     <h3 class="px-2 py-4 text-left">{{ $product->name }}</h3>
-                    <p class="px-2 py-4 text-left">{{ $product->price }}€</p>
+                    @php
+                        $finalPrice = $product->price - ($product->discount ?? 0);
+                        if ($finalPrice < 0) $finalPrice = 0;
+                    @endphp
+
+                    <p class="px-2 py-4 text-left">{{ number_format($finalPrice, 2) }}€</p>
 
                     <div class="mt-auto pt-2 flex justify-between items-center">
                         <form method="POST" action="{{ route('cart.add', ['product' => $product]) }}"
@@ -27,6 +31,12 @@
                             </button>
                         </form>
                     </div>
+
+                    @if ($product->stock <= 0)
+                        <p class="text-white font-semibold mb-2">
+                            Product out of stock delivery may take longer.
+                        </p>
+                    @endif
 
                     <div class="mt-auto pt-2 flex justify-between items-center">
                         <span class="px-2 py-4 text-left">Description: {{ $product->description }}</span>

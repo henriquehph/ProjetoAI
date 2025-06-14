@@ -14,11 +14,11 @@
                 {{ __('Canceled Orders') }}
             </x-nav-link>
             <!-- Produtos sem stock -->
-            <x-nav-link :href="route('orders.index')" :active="request()->routeIs('users.index')">
+            <x-nav-link :href="route('orders.index')" :active="request()->routeIs('orders.index')">
                 {{ __('Out of stock products') }}
             </x-nav-link>
             <!-- Produtos abaixo do minimo de stock -->
-            <x-nav-link :href="route('orders.index')" :active="request()->routeIs('users.index')">
+            <x-nav-link :href="route('orders.index')" :active="request()->routeIs('orders.index')">
                 {{ __('Products below minimum stock') }}
             </x-nav-link>
         </div>
@@ -38,6 +38,7 @@
                                         :price="old('price', $filterPrice)"
                                         :date="old('date', $filterDate)"
                                         :status="$status"
+                                        :member_id="old('member_id', $filterId)"
                                         class="mb-6"
                                     />
                                 </div>
@@ -47,12 +48,18 @@
         <!-- Lista de pedidos -->
         @if ($orders->isEmpty())
             <p class="text-center text-gray-500 dark:text-gray-400 mt-6">
+                @if (!empty($filterId))
+                    No orders found for member ID <strong>{{ $filterId }}</strong>.
+                @else
                 No orders found for the selected filter.
+                @endif
             </p>
         @else
             <div class="my-4 flex justify-center font-base text-sm text-gray-700 dark:text-gray-300">
                 <div class="p-4 border border-gray-300 rounded-md bg-gray-50 dark:bg-gray-800">
-                    <x-order.table :orders="$orders" />
+                    <x-order.table
+                        :orders="$orders"
+                        :showView="true" />
                 </div>
             </div>
             <div class="flex justify-center mb-6">
