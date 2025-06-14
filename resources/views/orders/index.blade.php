@@ -66,5 +66,26 @@
                 {{ $orders->appends(request()->query())->links() }}
             </div>
         @endif
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-center text-gray-900 dark:text-gray-100 text-xl font-semibold">
+                    {{ __("Order Options") }}
+                </div>
+                
+                <div class="p-3 text-gray-900 dark:text-gray-100">
+                    <p class="text-lg font-medium mb-4">Select an order ID to view details or perform actions.</p>
+                </div>
+                <div class="p-6 flex items-start justify-between ">
+                    <form method="post" action="{{ route('orders.cancelOrder', $order) }}">
+                        @csrf
+                        @method('POST')
+                        <div class="flex items-center">
+                            <x-text-input class="p-2"  label="Order ID" name="order_id" placeholder="Enter Order ID" />
+                            <x-submit-button class="p-2" text="Cancel Order" type="primary" />
+                        </div>
+                    </form>
+               </div>
+            </div>
+        </div>
     </div>
 </x-app-layout>
