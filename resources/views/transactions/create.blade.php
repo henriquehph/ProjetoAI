@@ -14,6 +14,7 @@
             <input type="hidden" name="from" value="{{ request('from') }}">
             @if (isset($order))
                 <input type="hidden" name="order_id" value="{{ $order->id }}">
+                
             @endif
 
             <div class="mb-4">

@@ -174,11 +174,14 @@ class CartController extends Controller
         $memberId = $user->id;
         $nif = $request->input('nif');
         $address = $request->input('address');
+        
+        $shippingCost = ShippingCost::where('min_value_threshold', '<=', $products->sum('subtotal'))
+            ->where('max_value_threshold', '>', $products->sum('subtotal'))
+            ->value('shipping_cost');
 
-
+        $total = $products->sum('subtotal') + ($shippingCost ?? 0);
         $totalItems = $products->sum('quantity');
-        $shippingCost = 0;
-        $total = 10;
+        
         //Verificar saldo do cartão virtual
         //Criar Order
         //dd($memberId, $nif, $address, $totalItems, $shippingCost, $total);
@@ -203,7 +206,7 @@ class CartController extends Controller
         $debit_type = 'order';
 
 
-        $request->session()->forget('cart');
+        //$request->session()->forget('cart');
 
         return view('transactions.create', compact('value', 'debit_type', 'order'));
 
