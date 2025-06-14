@@ -56,8 +56,8 @@ Route::middleware('auth')->group(function () {
         Route::view('dashboard', 'dashboard')->name('dashboard');
         Route::resource('categories', CategoryController::class);
         Route::resource('statistics', StatisticsController::class);
-
     });
+    Route::resource('statistics', StatisticsController::class);
 });
 
 

@@ -27,9 +27,18 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="space-x-4">
-            <!-- Pedidos pendentes -->
-            <x-nav-link :href="route('orders.index', ['status' => 'pending'])" :active="request('status') === 'pending'">
-                {{ __('Pending button') }}
+            <!-- Pedidos pendentes this really needs a better option...-->
+            <x-nav-link :href="route('statistics.index', ['filter' => 'Week'])">
+                {{ __('Week') }}
+            </x-nav-link>
+            <x-nav-link :href="route('statistics.index', ['filter' => 'Month'])" :active="request('status') === 'pending'">
+                {{ __('Month') }}
+            </x-nav-link>
+            <x-nav-link :href="route('statistics.index', ['filter' => 'Year'])" :active="request('status') === 'pending'">
+                {{ __('Year') }}
+            </x-nav-link>
+            <x-nav-link :href="route('statistics.index', ['filter' => 'Total'])" :active="request('status') === 'pending'">
+                {{ __('Total') }}
             </x-nav-link>
             
     </x-slot>
@@ -39,7 +48,9 @@
                 <h2 class="text-2xl pb-8 text-center font-semibold text-white">
                         {{ __('Statistics of ') . $judged }}<!-- Replace with dynamic user name and role  if needed -->
                     </h2>
-                
+                    <h2 class="text-lg pb-8 text-center font-semibold text-slate-400">
+                        {{ $filter }}<!-- Replace with dynamic user name and role  if needed -->
+                    </h2>
                     <div class="flex items-center gap-4 mb-4">
                     
                     
