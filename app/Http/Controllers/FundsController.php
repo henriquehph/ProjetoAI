@@ -1,36 +1,38 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Card;
 
 class FundsController extends Controller
 {
-    // Mostrar a pagina de Add Funds
-    public function showAddFundsPage()
+    // Show the "Add Funds" form
+    public function create()
     {
-        return view('add-funds');  // Retorna a view add-funds
+        return view('funds.add');  
     }
 
-    //Tratar de adicionar os fundos
-    public function addFunds(Request $request)
+    // Handle the form submission and add funds
+    public function store(Request $request)
     {
-        // Validar a quantidade
         $request->validate([
             'amount' => 'required|numeric|min:1',
         ]);
 
-        // Obter o user logged In
         $user = Auth::user();
-        
-        // Get the card linked to the user
-        $card = Card::where('id', $user->id)->first();
-        
-        // Add the entered amount to the card balance
-        $card->increment('balance', $request->amount);
 
-        // Redirect back to the home page with a success message
+        // Find the user's card 
+        $card = Card::where('id', $user->id)->first();
+
+        if (!$card) {
+            return redirect()->back()->withErrors(['card' => 'No card found for your account. Please add a card first.']);
+        }
+
+        // Add amount to the card balance
+        $card->increment('balance', $request->input('amount'));
+
         return redirect()->route('profile.edit')->with('success', 'Funds added successfully!');
     }
 }

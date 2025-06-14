@@ -16,6 +16,8 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\StatisticsController;
 use App\Http\Controllers\ShippingCostController;    
+use App\Http\Controllers\PaymentController;
+
 
 Route::get('/', [ProductController::class, 'index'])->name('home'); // Rota para a página inicial, que lista os produtos
 
@@ -110,3 +112,22 @@ Route::get('/add-funds', [FundsController::class, 'showAddFundsPage'])->middlewa
 //Post para processar o pagamento
 Route::post('/add-funds', [FundsController::class, 'addFunds'])->middleware('verified');
 
+Route::post('/pay/visa', [PaymentController::class, 'payWithVisa'])->name('pay.visa');
+Route::post('/pay/paypal', [PaymentController::class, 'payWithPaypal'])->name('pay.paypal');
+Route::post('/pay/mbway', [PaymentController::class, 'payWithMBway'])->name('pay.mbway');
+
+
+Route::get('/pay/visa', function () {
+    return view('payments.visa');  // your Visa payment form view
+})->name('pay.visa.form');
+
+Route::get('/pay/paypal', function () {
+    return view('payments.paypal');  // your Paypal payment form view
+})->name('pay.paypal.form');
+
+Route::get('/pay/mbway', function () {
+    return view('payments.mbway');  // your MBWay payment form view
+})->name('pay.mbway.form');
+
+Route::get('/funds/add', [FundsController::class, 'create'])->name('funds.add');
+Route::post('/funds/add', [FundsController::class, 'store'])->name('funds.store');

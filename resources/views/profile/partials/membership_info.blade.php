@@ -11,9 +11,7 @@
             <p class="text-lg text-gray-700 dark:text-gray-300 font-semibold">
                 Card Balance: €{{ number_format($balance, 2) }}
             </p>
-            <a href="{{ url('/add-funds') }}">
-                <button type="button">Add Funds</button> <!-- Button to add funds -->
-            </a>
+            <x-hyperlink-text-button text="Add Funds" href="{{ route('funds.add') }}" type="success" />
         </div>
     </div>
 

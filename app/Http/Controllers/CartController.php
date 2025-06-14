@@ -139,7 +139,7 @@ class CartController extends Controller
 
     public function confirm(Request $request, TransactionService $transactionService)//: RedirectResponse
     {
-        
+
         //Confirmar se utilizador está logado
         if (!auth()->check()) {
             return redirect()->route('login')->with('alert-msg', 'Please log in to confirm your purchase.');
@@ -149,6 +149,8 @@ class CartController extends Controller
 
         //Confirmar se o carrinho tem produtos
         $cart = session('cart', collect());
+
+
 
         if ($cart->isEmpty()) {
             return back()->with('alert-type', 'danger')->with('alert-msg', 'Your cart is empty.');
@@ -174,14 +176,24 @@ class CartController extends Controller
         $memberId = $user->id;
         $nif = $request->input('nif');
         $address = $request->input('address');
-        
+
+        $request->validate([
+            'nif' => ['required', 'digits:9'],  // exactly 9 digits
+            'address' => ['required', 'string', 'max:255'],
+        ], [
+            'nif.required' => 'NIF is required.',
+            'nif.digits' => 'NIF must be exactly 9 digits.',
+            'address.required' => 'Address is required.',
+            'address.string' => 'Address must be a valid string.',
+            'address.max' => 'Address may not be greater than 255 characters.',
+        ]);
         $shippingCost = ShippingCost::where('min_value_threshold', '<=', $products->sum('subtotal'))
             ->where('max_value_threshold', '>', $products->sum('subtotal'))
             ->value('shipping_cost');
 
         $total = $products->sum('subtotal') + ($shippingCost ?? 0);
         $totalItems = $products->sum('quantity');
-        
+
         //Verificar saldo do cartão virtual
         //Criar Order
         //dd($memberId, $nif, $address, $totalItems, $shippingCost, $total);
@@ -206,7 +218,7 @@ class CartController extends Controller
         $debit_type = 'order';
 
 
-        //$request->session()->forget('cart');
+        //  
 
         return view('transactions.create', compact('value', 'debit_type', 'order'));
 

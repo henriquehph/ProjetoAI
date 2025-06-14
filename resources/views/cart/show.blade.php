@@ -12,7 +12,12 @@
                     <h2 class="text-2xl font-bold text-gray-700 dark:text-gray-300">Your cart is empty</h2>
                 </div>
             @else
+
+
+
             <div class="my-8 p-12">
+
+
                 <div class="flex flex-col lg:flex-row lg:space-x-12 space-y-8 lg:space-y-0 items-start">
                     <!-- Container Esquerda -->
                     <div class="w-2/3 p-4 border border-gray-300 rounded-md bg-gray-50 dark:bg-gray-800">
@@ -23,8 +28,19 @@
                             <x-cart.table :products="$cart" :total="$total" :shipping="$shipping" />
                         </div>
                     </div>
+
+
                     <!-- Container Direita -->
                     <div class="w-2/3 p-4 border border-gray-300 rounded-md bg-gray-50 dark:bg-gray-800">
+                        @if ($errors->any())
+                            <div class="text-red-600 text-xl font-semibold">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <div>
                             <h3 class="mb-4 text-xl text-gray-700 dark:text-gray-300">Shopping Cart Confirmation</h3>
                         </div>
