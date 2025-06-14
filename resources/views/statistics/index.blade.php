@@ -37,7 +37,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 sm:p-8 bg-black dark:bg-gray-800 shadow sm:rounded-lg">
                 <h2 class="text-2xl pb-8 text-center font-semibold text-white">
-                        {{ __('Statistics of Client User') }}<!-- Replace with dynamic user name and role  if needed -->
+                        {{ __('Statistics of ') . Auth::user()->name }}<!-- Replace with dynamic user name and role  if needed -->
                     </h2>
                 
                     <div class="flex items-center gap-4 mb-4">
@@ -47,42 +47,40 @@
                     </div>
 
                     <table class="table-auto top-padding mx-auto w-1/2 border-A border-white dark:border-gray-700">
-                        <thead>
 
-                        </thead>
                         <tbody>
 
                                 <tr class="text-white bg-slate-700 rounded-lg border-b border-b-gray-600 dark:border-b-gray-500">
                                     <td class="px-2 py-2 text-left hidden lg:table-cell">Most expensive purchase</td>
-                                    <td class="px-2 py-2 bg-gray-900 text-left hidden lg:table-cell">Value</td>
+                                    <td class="px-2 py-2 bg-gray-900 text-left hidden lg:table-cell">{{  }}</td>
                                 </tr>
                                 <tr class="text-white bg-slate-700 rounded-lg border-b border-b-gray-600 dark:border-b-gray-500">
                                     <td class="px-2 py-2 text-left hidden lg:table-cell">Cheapest purchase</td>
-                                    <td class="px-2 py-2 bg-gray-900 text-left hidden lg:table-cell">Value</td> 
+                                    <td class="px-2 py-2 bg-gray-900 text-left hidden lg:table-cell">{{  }}</td> 
                                 </tr>
                                 <tr class="text-white bg-slate-700  rounded-lg border-b border-b-gray-600 dark:border-b-gray-500">
                                     <td class="px-2 py-2 text-left hidden lg:table-cell">Average money  purchase</td>
-                                    <td class="px-2 py-2 bg-gray-900 text-left hidden lg:table-cell">Value</td>
+                                    <td class="px-2 py-2 bg-gray-900 text-left hidden lg:table-cell">{{  }}</td>
                                 </tr>
                                 <tr class="text-white bg-slate-700 rounded-lg border-b border-b-gray-600 dark:border-b-gray-500">
                                     <td class="px-2 py-2 text-left hidden lg:table-cell">Most expensive cart</td>
-                                    <td class="px-2 py-2 bg-gray-900 text-left hidden lg:table-cell">Value</td>
+                                    <td class="px-2 py-2 bg-gray-900 text-left hidden lg:table-cell">{{  }}</td>
                                 </tr>
                                 <tr class="text-white bg-slate-700 rounded-lg border-b border-b-gray-600 dark:border-b-gray-500">
                                     <td class="px-2 py-2 text-left hidden lg:table-cell">Cheapest cart</td>
-                                    <td class="px-2 py-2 bg-gray-900 text-left hidden lg:table-cell">Value</td>
+                                    <td class="px-2 py-2 bg-gray-900 text-left hidden lg:table-cell">{{  }}</td>
                                 </tr>
                                 <tr class="text-white bg-slate-700 rounded-lg border-b border-b-gray-600 dark:border-b-gray-500">
                                     <td class="px-2 py-2 text-left hidden lg:table-cell">Average ammount of products bought</td>
-                                    <td class="px-2 py-2 bg-gray-900 text-left hidden lg:table-cell">Value</td>
+                                    <td class="px-2 py-2 bg-gray-900 text-left hidden lg:table-cell">{{}}</td>
                                 </tr>
                                 <tr class="text-white bg-slate-700 rounded-lg border-b border-b-gray-600 dark:border-b-gray-500">
                                     <td class="px-2 py-2 text-left hidden lg:table-cell">Fullest cart</td>
-                                    <td class="px-2 py-2 bg-gray-900 text-left hidden lg:table-cell">Value</td>
+                                    <td class="px-2 py-2 bg-gray-900 text-left hidden lg:table-cell">{{  }}</td>
                                 </tr>
                                 <tr class="text-white bg-slate-700 rounded-lg border-b border-b-gray-600 dark:border-b-gray-500">
                                     <td class="px-2 py-2 text-left hidden lg:table-cell">Emptiest cart</td>
-                                    <td class="px-2 py-2 bg-gray-900 text-left hidden lg:table-cell">Value</td>
+                                    <td class="px-2 py-2 bg-gray-900 text-left hidden lg:table-cell">{{  }}}</td>
                                 </tr>
                                 
 
@@ -102,6 +100,9 @@
                             </x-dropdown-link>
                             <x-dropdown-link :href="route('catalog', ['type' => 'csv'])">
                                 {{ __('Export as Excel') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="route('catalog', ['type' => 'pdf'])">
+                                {{ __('Export as PDF') }}
                             </x-dropdown-link>
                         </x-slot>
                     </x-dropdown>
