@@ -11,6 +11,7 @@ use App\Models\Settings_shipping_costs;
 use App\Http\Requests\CartConfirmationFormRequest;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
+use App\Models\ShippingCost;
 
 class CartController extends Controller
 {
@@ -34,7 +35,7 @@ class CartController extends Controller
 
         $subtotalCart = $cartItems->sum('subtotal');
 
-        $shipping_cost = Settings_shipping_costs::where('min_value_threshold', '<=', $subtotalCart)
+        $shipping_cost = ShippingCost::where('min_value_threshold', '<=', $subtotalCart)
             ->where('max_value_threshold', '>', $subtotalCart)
             ->value('shipping_cost');
 
@@ -183,6 +184,9 @@ class CartController extends Controller
         //Criar encomenda - OrderItems
         //Retirar o valor ao utilizador
         //Limpar carrinho
+
+
+
         $request->session()->forget('cart');
         return back()
             ->with('alert-type', 'success')

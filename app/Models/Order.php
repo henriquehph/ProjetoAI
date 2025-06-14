@@ -27,7 +27,7 @@ class Order extends Model
     //Relação com a tabela Item_orders
     public function item_order()
     {
-        return $this->HasMany(Item_order::class);
+        return $this->HasMany(Items_order::class);
     }
     //Relação com a tabela operation
     public function operation()
