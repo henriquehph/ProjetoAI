@@ -30,4 +30,9 @@ class Card extends Model
         return $this->hasMany(Operation::class, 'card_id');
     }
 
+    public function user()
+{
+    return $this->hasOne(User::class, 'id', 'id');
+}
+
 }

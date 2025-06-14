@@ -41,6 +41,7 @@ class TransactionController extends Controller
     }
 
     public function store(Request $request)
+
     {
         $redirectUrl = $request->input('from') ?? route('home');
 
@@ -64,6 +65,10 @@ class TransactionController extends Controller
         $card->balance -= $request->value;
         $card->save();
 
+        $order_id = null;
+        $debit_type = $request->debit_type;
+        $debit_type == 'membership_fee' ? $order_id = null : $order_id = $request->input('order_id');
+
         // Create transaction
         Operation::create([
             'card_id' => $card->id,
@@ -74,7 +79,7 @@ class TransactionController extends Controller
             'credit_type' => null,
             'payment_type' => null,
             'payment_reference' => null,
-            'order_id' => null,
+            'order_id' => $order_id
         ]);
 
         // If membership_fee transaction, update user type to 'member'

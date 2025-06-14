@@ -17,6 +17,7 @@ class Order extends Model
         'delivery_address',
         'pdf_receipt',
         'cancel_reason',
+        
     ];
 
     public $timestamps = true;

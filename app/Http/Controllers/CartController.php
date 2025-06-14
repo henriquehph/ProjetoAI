@@ -12,6 +12,8 @@ use App\Http\Requests\CartConfirmationFormRequest;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\ShippingCost;
+use App\Services\TransactionService;
+use App\Models\Order;
 
 class CartController extends Controller
 {
@@ -23,7 +25,7 @@ class CartController extends Controller
             $product = Product::find($item['product_id']);
 
             if (!$product) {
-            return null;
+                return null;
             }
 
             return [
@@ -45,7 +47,7 @@ class CartController extends Controller
 
         $total = $subtotalCart + $shipping_cost;
 
-        return view('cart.show', ['cart' => $cartItems,'total' => $total, 'shipping'=>$shipping_cost]);
+        return view('cart.show', ['cart' => $cartItems, 'total' => $total, 'shipping' => $shipping_cost]);
     }
 
     public function addToCart(Request $request, Product $product): RedirectResponse
@@ -88,7 +90,7 @@ class CartController extends Controller
     }
 
 
-    
+
     public function removeFromCart(Request $request, Product $product): RedirectResponse
     {
         $url = route('products.show', ['product' => $product]);
@@ -135,12 +137,16 @@ class CartController extends Controller
     }
 
 
-    public function confirm(Request $request): RedirectResponse
+    public function confirm(Request $request, TransactionService $transactionService)//: RedirectResponse
     {
+        
         //Confirmar se utilizador está logado
         if (!auth()->check()) {
             return redirect()->route('login')->with('alert-msg', 'Please log in to confirm your purchase.');
         }
+
+        $user = auth()->user();
+
         //Confirmar se o carrinho tem produtos
         $cart = session('cart', collect());
 
@@ -150,11 +156,13 @@ class CartController extends Controller
         //Obter preco final da compra
         $products = $cart->map(function ($item) {
             $product = Product::find($item['product_id']);
-            if (!$product) return null;
+            if (!$product)
+                return null;
 
             // preço final pode considerar desconto aqui
             $finalPrice = $product->price - ($product->discount ?? 0);
-            if ($finalPrice < 0) $finalPrice = 0;
+            if ($finalPrice < 0)
+                $finalPrice = 0;
 
             return [
                 'product' => $product,
@@ -163,15 +171,20 @@ class CartController extends Controller
                 'unit_price' => $finalPrice,
             ];
         });
-        $memberId = auth()->id();
+        $memberId = $user->id;
         $nif = $request->input('nif');
-        $address = $request->input('delivery_address');
+        $address = $request->input('address');
 
+
+        $totalItems = $products->sum('quantity');
+        $shippingCost = 0;
+        $total = 10;
         //Verificar saldo do cartão virtual
         //Criar Order
+        //dd($memberId, $nif, $address, $totalItems, $shippingCost, $total);
         $order = Order::create([
             'member_id' => $memberId,
-            'status' => 'preparing',
+            'status' => 'completed',
             'date' => now(),
             'total_items' => $totalItems,
             'shipping_cost' => $shippingCost,
@@ -181,16 +194,23 @@ class CartController extends Controller
             'pdf_receipt' => null,
             'cancel_reason' => null,
         ]);
+        //dd($order);
         //Criar encomenda - OrderItems
         //Retirar o valor ao utilizador
         //Limpar carrinho
 
+        $value = $total;
+        $debit_type = 'order';
 
 
         $request->session()->forget('cart');
-        return back()
-            ->with('alert-type', 'success')
-            ->with('alert-msg', 'Shopping Cart has been cleared');
 
+        return view('transactions.create', compact('value', 'debit_type', 'order'));
+
+        /* 
+                return back()
+                    ->with('alert-type', 'success')
+                    ->with('alert-msg', 'Shopping Cart has been cleared');
+         */
     }
 }
